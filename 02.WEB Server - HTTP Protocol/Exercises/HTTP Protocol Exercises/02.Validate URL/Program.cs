@@ -66,10 +66,15 @@ namespace _02.Validate_URL
                 return false;
             }
 
-            if (uri.Scheme == "" || uri.Host == "" || uri.Port == -1 || uri.AbsolutePath == "")
+            if (string.IsNullOrEmpty(uri.Scheme) || string.IsNullOrEmpty(uri.Host) || string.IsNullOrEmpty(uri.AbsolutePath) || uri.Port == -1)
             {
                 return false;
             }
+
+            //if (uri.Scheme == "" || uri.Host == "" || uri.Port == -1 || uri.AbsolutePath == "")
+            //{
+            //    return false;
+            //}
             return Uri.TryCreate(strURL, UriKind.RelativeOrAbsolute, out uri);
         }
     }
