@@ -3,67 +3,93 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-
+using System.Threading.Tasks;
+using HttpMachine;
 namespace MyCustomHttpServer
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            IHttpServer server = new HttpServer();
-            server.Start();
-        }
-        
-    }
+            var port = 1337;
+            var ipAddress = IPAddress.Parse("127.0.0.1");
 
-    public class HttpServer : IHttpServer
-    {
-        private bool isWorking;
-        private TcpListener tcpListener;
+            var tcpListender = new TcpListener(ipAddress, port);
+            tcpListender.Start();
 
-        public HttpServer()
-        {
-            this.tcpListener = new TcpListener(IPAddress.Parse("127.0.0.1"),443);
+            Task.Run(async () =>
+            {
+                await Connect(tcpListender);
+            })
+                .GetAwaiter()
+                .GetResult();
         }
 
-        public void Start()
+        public static async Task Connect(TcpListener listener)
         {
-            this.isWorking = true;
-            tcpListener.Start();
-            Console.WriteLine("Started. 443");
             while (true)
             {
-                var client = this.tcpListener.AcceptTcpClient();
-                var buffer = new byte[10240];
-                var stream = client.GetStream();
-                var readLenght = stream.Read(buffer, 0, buffer.Length);
-                var requestText = Encoding.UTF8.GetString(buffer,0 , readLenght);
-                Console.WriteLine(new string('=',50));
-                Console.WriteLine(requestText);
+                var client = await listener.AcceptTcpClientAsync();
+                var buffer = new byte[1024];
+                await client.GetStream().ReadAsync(buffer, 0, buffer.Length);
+                var clientMessege = Encoding.UTF8.GetString(buffer);
+                Console.WriteLine(clientMessege);
 
-                var responseText = File.ReadAllText("form.html");
+                var parsed = clientMessege.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var path = parsed[1];
 
-                var responseBytes = Encoding.UTF8.GetBytes(
-                    "HTTP/1.0 200 OK" + Environment.NewLine
-                    + "Content-Type: text/html" + Environment.NewLine
-                    + "Content-Length: " + responseText.Length + Environment.NewLine
-                    + Environment.NewLine
-                    + responseText
-                    );
-                stream.Write(responseBytes);
+                var responseText = "Page Not Found";
+                var statusCode = 404;
+                if (path == "/index" || path == "/index.html")
+                {
+                    responseText = File.ReadAllText("BeerStore\\index.html");
+                    statusCode = 200;
+                }
+                else if (path == "/all-beers.html")
+                {
+                    responseText = File.ReadAllText("BeerStore\\all-beers.html");
+                    statusCode = 200;
+                }
+                else if (path == "/style/style.css")
+                {
+                    responseText = File.ReadAllText("BeerStore\\style\\style.css");
+                    statusCode = 200;
+                }
+
+                var response = $"HTTP/1.1 {statusCode} OK" + Environment.NewLine
+                                        + "Content-Length: " + responseText.Length + Environment.NewLine
+                                        + "Content-Type: text/html" + Environment.NewLine + Environment.NewLine
+                                        + responseText;
+                var responseBytes = Encoding.UTF8.GetBytes(response);
+                await client.GetStream().WriteAsync(responseBytes, 0, responseBytes.Length);
+                client.Dispose();
             }
         }
 
-        public void Stop()
+        public interface IHttpParserDelegate
         {
-            isWorking = false;
+            void OnMessageBegin(HttpParser parser);
+            void OnHeaderName(HttpParser parser, string name);
+            void OnHeaderValue(HttpParser parser, string value);
+            void OnHeadersEnd(HttpParser parser);
+            void OnBody(HttpParser parser, ArraySegment<byte> data);
+            void OnMessageEnd(HttpParser parser);
+        }
+
+        public interface IHttpRequestParserDelegate : IHttpParserDelegate
+        {
+            void OnMethod(HttpParser parser, string method);
+            void OnRequestUri(HttpParser parser, string requestUri);
+            void OnPath(HttpParser parser, string path);
+            void OnFragment(HttpParser parser, string fragment);
+            void OnQueryString(HttpParser parser, string queryString);
+        }
+
+        public interface IHttpResponseParserDelegate : IHttpParserDelegate
+        {
+            void OnResponseCode(HttpParser parser, int statusCode, string statusReason);
         }
     }
-
-    public interface IHttpServer
-        {
-            void Start();
-
-            void Stop();
-        }
 }
+
+

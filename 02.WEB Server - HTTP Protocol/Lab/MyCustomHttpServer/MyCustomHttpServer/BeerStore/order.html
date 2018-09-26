@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Order</title>
+	<meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="style/style.css" />
+    <link rel="stylesheet" type="text/css" href="style/form.css" />
+</head>
+<body>
+	<nav>
+        <div class="topnav">
+            <a href="index.html" class="logo"><img src="images/logo.png" /></a>
+            <a href="index.html">Home</a>
+            <a href="all-beers.html">See All Beers</a>
+            <a href="order.html" class="active">Order a Beer</a>
+            <a href="register.html" class="right">Register</a>
+            <a href="login.html" class="right">Login</a>
+        </div>
+
+    </nav>
+
+    <main>	
+    	<center>
+    		<h1>Order a Beer</h1>
+    		<form>
+    			<label>Brand</label>
+    			<select>
+    				<option selected disabled>Select a brand</option>
+    				<option>Corona Extra 330 ml</option>
+    				<option>Stella Artois 500ml</option>
+    				<option>Carlsberg 500ml</option>
+    				<option>Heineken 500ml</option>
+    			</select>
+    			<label>Quantity</label>
+    			<input type="number" min="1" max="15" name="Quantity" placeholder="Enter amount of beers(1-15)">
+    			<label>Destination</label>
+    			<select>
+    				<option selected disabled="">Select a destination</option>
+    				<option>Kyustendil</option>
+    				<option>Sofia</option>
+    				<option>Varna</option>
+    				<option>Ranenci</option>
+    				<option>Kiten</option>
+    			</select>
+    			<label>Enter your birthday</label>
+    			<input type="date" name="birthday">
+    			<textarea placeholder="share your option with us"></textarea>
+    			<input type="submit" name="order" value="Order">
+    		</form>
+    	</center>
+    </main>
+
+     <footer>
+        <hr />
+        <p><em>&copy; 2018 &ndash; SvetlinMladenov Beers</em></p>
+    </footer>
+</body>
+</html>
