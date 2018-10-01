@@ -1,12 +1,9 @@
-﻿using System;
-using SIS.Http.Requests;
-
-namespace SIS.App
+﻿namespace SIS.Demo
 {
-    using SIS.Http.Enums;
-    using SIS.WebServer;
-    using SIS.WebServer.Routing;
-    public class App
+    using Http.Enums;
+    using WebServer;
+    using WebServer.Routing;
+    public class Launcher
     {
         public static void Main(string[] args)
         {

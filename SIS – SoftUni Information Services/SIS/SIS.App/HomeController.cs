@@ -1,6 +1,6 @@
 ﻿using SIS.Http.Responses;
 
-namespace SIS.App
+namespace SIS.Demo
 {
     using Http.Enums;
     using Http.Responses.Contracts;
