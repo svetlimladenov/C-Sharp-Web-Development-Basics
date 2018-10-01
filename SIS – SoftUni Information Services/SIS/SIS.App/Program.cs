@@ -1,4 +1,7 @@
-﻿namespace SIS.App
+﻿using System;
+using SIS.Http.Requests;
+
+namespace SIS.App
 {
     using SIS.Http.Enums;
     using SIS.WebServer;
@@ -10,7 +13,7 @@
             var serverRoutingTable = new ServerRoutingTable();
 
             serverRoutingTable.Reoutes[HttpRequestMethod.Get]["/"] = request => new HomeController().Index();
-
+            serverRoutingTable.Reoutes[HttpRequestMethod.Get]["/home"] = request => new HomeController().Home();
             Server server = new Server(8000, serverRoutingTable);
 
             server.Run();

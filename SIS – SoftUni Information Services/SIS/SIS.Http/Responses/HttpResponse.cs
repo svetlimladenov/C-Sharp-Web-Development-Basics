@@ -8,6 +8,8 @@
     using Headers;
     using Contracts;
     using Headers.Contracts;
+    using Cookies;
+    using Cookies.Contracts;
     public class HttpResponse : IHttpResponse
     {
         public HttpResponse()
@@ -17,6 +19,7 @@
         public HttpResponse(HttpResponseStatusCode statusCode)
         {
             this.Headers = new HttpHeaderCollection();
+            this.Cookies = new HttpCookieCollection();
             this.Content = new byte[0];
             this.StatusCode = statusCode;
         }
@@ -25,12 +28,20 @@
 
         public IHttpHeaderCollection Headers { get; private set; }
 
+        public IHttpCookieCollection Cookies { get; private set; }
+
         public byte[] Content { get; set; }
 
         public void AddHeader(HttpHeader header)
         {
             CoreValidator.ThrowIfNull(header, nameof(header));
             this.Headers.Add(header);
+        }
+
+        public void AddCookie(HttpCookie cookie)
+        {
+            CoreValidator.ThrowIfNull(cookie,nameof(cookie));
+            this.Cookies.Add(cookie);
         }
 
         public byte[] GetBytes()
@@ -43,8 +54,14 @@
             var result = new StringBuilder();
             result
                 .AppendLine($"{GlobalConstants.HttpOneProtocolFragment} {this.StatusCode.GetResponseLine()}")
-                .AppendLine($"{this.Headers}")
-                .AppendLine();
+                .AppendLine($"{this.Headers}");
+
+            if (this.Cookies.HasCookies())
+            {
+                result.AppendLine($"Set-Cookie: {this.Cookies}");
+            }
+
+            result.AppendLine();
 
             return result.ToString();
         }

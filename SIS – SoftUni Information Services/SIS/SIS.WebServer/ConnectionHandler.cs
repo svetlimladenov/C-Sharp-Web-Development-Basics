@@ -1,16 +1,15 @@
-﻿using System;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using SIS.Http.Enums;
-using SIS.Http.Requests;
-using SIS.Http.Requests.Contracts;
-using SIS.Http.Responses;
-using SIS.Http.Responses.Contracts;
-using SIS.WebServer.Routing;
-
-namespace SIS.WebServer
+﻿namespace SIS.WebServer
 {
+    using System;
+    using System.Net.Sockets;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Http.Enums;
+    using Http.Requests;
+    using Http.Requests.Contracts;
+    using Http.Responses;
+    using Http.Responses.Contracts;
+    using Routing;
     public class ConnectionHandler
     {
         private readonly Socket client;
@@ -21,7 +20,7 @@ namespace SIS.WebServer
         {
             this.client = client;
             this.serverRoutingTable = serverRoutingTable;
-        }    
+        }
 
         private async Task<IHttpRequest> ReadRequest()
         {

@@ -1,9 +1,13 @@
-﻿namespace SIS.Http.Requests
+﻿using System.Net.Security;
+using SIS.Http.Cookies;
+
+namespace SIS.Http.Requests
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using Cookies.Contracts;
     using Common;
     using Enums;
     using Exceptions;
@@ -20,6 +24,7 @@
             this.FormData = new Dictionary<string, object>();
             this.QueryData = new Dictionary<string, object>();
             this.Headers = new HttpHeaderCollection();
+            this.Cookies = new HttpCookieCollection();
 
             this.ParseRequest(requestString);
             //TODO: Parse request data..
@@ -33,6 +38,8 @@
         public Dictionary<string, object> QueryData { get; }
 
         public IHttpHeaderCollection Headers { get; }
+
+        public IHttpCookieCollection Cookies { get; }
 
         public HttpRequestMethod RequestMethod { get; private set; }
 
@@ -145,6 +152,42 @@
             }
         }
 
+        private void ParseCookies()
+        {
+            if (!this.Headers.ContainsHeader("Cookie"))
+            {
+                return;
+            }
+            //Cookie: lang=en; to=GH;
+            var cookiesHeaderSplit = this.Headers.GetHeader("Cookie").Value;
+
+
+            //lang = en; to = GH;
+            var cookies = cookiesHeaderSplit.Split("; ", StringSplitOptions.RemoveEmptyEntries);
+            foreach (var cookie in cookies)
+            {
+                var cookieParts = cookie.Split('=', 2, StringSplitOptions.RemoveEmptyEntries);
+                if (cookieParts.Length == 2)
+                {
+                    var cookiesName = cookieParts[0];
+                    var cookieValue = cookieParts[1];
+                    if (!this.Cookies.ContainsCookie(cookiesName))
+                    {
+                        this.Cookies.Add(new HttpCookie(cookiesName, cookieValue, false));
+                    }
+                }
+                else
+                {
+                    var cookiesName = cookieParts[0];
+                    if (!this.Cookies.ContainsCookie(cookiesName))
+                    {
+                        this.Cookies.Add(new HttpCookie(cookiesName,string.Empty, false));
+                    }
+                }
+            }
+
+        }
+
         private void ParseRequest(string requestString)
         {
             var splitRequestContent = requestString
@@ -163,9 +206,12 @@
             this.ParseRequestPath();
 
             this.ParseHeaders(splitRequestContent.Skip(1).ToArray());
+            this.ParseCookies();
             this.ParseQueryParameters();
             this.ParseFormDataParameters(splitRequestContent.Last());
         }
+
+
     }
 
 

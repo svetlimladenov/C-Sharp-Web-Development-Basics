@@ -27,7 +27,7 @@
             return this.headers.ContainsKey(key);
         }
 
-        public HttpHeader GeHeader(string key)
+        public HttpHeader GetHeader(string key)
         {
             CoreValidator.ThrowIfNullOrEmpty(key, nameof(key));
             if (!this.ContainsHeader(key))

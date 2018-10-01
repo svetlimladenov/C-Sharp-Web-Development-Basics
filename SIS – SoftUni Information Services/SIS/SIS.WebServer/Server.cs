@@ -1,11 +1,10 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading.Tasks;
-using SIS.WebServer.Routing;
-
-namespace SIS.WebServer
+﻿namespace SIS.WebServer
 {
+    using System;
+    using System.Net;
+    using System.Net.Sockets;
+    using System.Threading.Tasks;
+    using Routing;
     public class Server
     {
         private const string LocalHostIpAddress = "127.0.0.1";
@@ -18,10 +17,10 @@ namespace SIS.WebServer
 
         private bool isRunning;
 
-        public Server(int port,ServerRoutingTable serverRoutingTable)
+        public Server(int port, ServerRoutingTable serverRoutingTable)
         {
             this.port = port;
-            this.listener = new TcpListener(IPAddress.Parse(LocalHostIpAddress),port);
+            this.listener = new TcpListener(IPAddress.Parse(LocalHostIpAddress), port);
             this.serverRoutingTable = serverRoutingTable;
         }
 
