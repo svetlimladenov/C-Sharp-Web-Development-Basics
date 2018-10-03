@@ -13,7 +13,7 @@ namespace CakesWebApp
 
             serverRoutingTable.Reoutes[HttpRequestMethod.Get]["/"] = request => new HomeController().Index();
             serverRoutingTable.Reoutes[HttpRequestMethod.Get]["/home"] = request => new HomeController().Home();
-            Server server = new Server(8000, serverRoutingTable);
+            Server server = new Server(80, serverRoutingTable);
 
             server.Run();
         }
