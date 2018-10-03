@@ -2,8 +2,8 @@
 {
     using System;
     using Contracts;
-    using Server.Common;
-    using Server.Http;
+    using Common;
+    using Http;
     using Http.Contracts;
 
     public abstract class RequestHandler : IRequestHandler
@@ -18,6 +18,7 @@
         public IHttpResponse Handle(IHttpContext context)
         {
             var response = this.handlingFunc(context.Request);
+
             response.Headers.Add(new HttpHeader("Content-Type", "text/plain"));
 
             return response;

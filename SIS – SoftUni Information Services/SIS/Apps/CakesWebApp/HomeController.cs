@@ -1,11 +1,12 @@
-﻿using SIS.Http.Responses;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using SIS.Http.Enums;
+using SIS.Http.Responses.Contracts;
+using SIS.WebServer.Results;
 
-namespace SIS.Demo
+namespace CakesWebApp
 {
-    using Http.Enums;
-    using Http.Responses.Contracts;
-    using WebServer.Results;
-
     public class HomeController
     {
         public IHttpResponse Index()
@@ -17,7 +18,7 @@ namespace SIS.Demo
         public IHttpResponse Home()
         {
             var content = "<h1> You are on Home Page</h1>";
-            return new HtmlResult(content,HttpResponseStatusCode.OK);
+            return new HtmlResult(content, HttpResponseStatusCode.OK);
         }
     }
 }

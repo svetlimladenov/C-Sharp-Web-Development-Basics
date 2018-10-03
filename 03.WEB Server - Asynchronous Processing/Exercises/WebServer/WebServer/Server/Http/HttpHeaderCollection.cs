@@ -40,6 +40,6 @@
             return this.headers[key];
         }
 
-        public override string ToString() => string.Join(Environment.NewLine, this.headers);
+        public override string ToString() => string.Join(Environment.NewLine, this.headers.Values);
     }
 }

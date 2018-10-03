@@ -1,5 +1,7 @@
 ﻿using System.Net.Security;
 using SIS.Http.Cookies;
+using SIS.Http.Sessions;
+using SIS.Http.Sessions.Contacts;
 
 namespace SIS.Http.Requests
 {
@@ -40,6 +42,8 @@ namespace SIS.Http.Requests
         public IHttpHeaderCollection Headers { get; }
 
         public IHttpCookieCollection Cookies { get; }
+
+        public IHttpSession Session { get; set; }
 
         public HttpRequestMethod RequestMethod { get; private set; }
 

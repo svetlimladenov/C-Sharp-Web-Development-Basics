@@ -1,6 +1,4 @@
-﻿using WebServer.Server.HTTP;
-
-namespace WebServer.Server.Http.Contracts
+﻿namespace WebServer.Server.Http.Contracts
 {
     public interface IHttpHeaderCollection
     {

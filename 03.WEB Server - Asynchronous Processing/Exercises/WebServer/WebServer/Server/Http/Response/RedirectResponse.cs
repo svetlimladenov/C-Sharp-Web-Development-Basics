@@ -1,7 +1,4 @@
-﻿
-using WebServer.Server.HTTP;
-
-namespace WebServer.Server.Http.Response
+﻿namespace WebServer.Server.Http.Response
 {
     using Common;
     using Enums;

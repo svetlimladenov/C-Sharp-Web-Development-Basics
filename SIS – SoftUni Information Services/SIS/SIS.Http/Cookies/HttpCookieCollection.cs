@@ -20,7 +20,7 @@ namespace SIS.Http.Cookies
         public void Add(HttpCookie cookie)
         {
             CoreValidator.ThrowIfNull(cookie, nameof(cookie));
-            this.cookies[cookie.Key] = cookie;
+            this.cookies.Add(cookie.Key, cookie);
         }
 
         public bool ContainsCookie(string key)
@@ -40,7 +40,7 @@ namespace SIS.Http.Cookies
 
         public override string ToString()
         {
-            return string.Join(HttpCookieStringSeparator, this.cookies);
+            return string.Join(HttpCookieStringSeparator, this.cookies.Values);
         }
     }
 }

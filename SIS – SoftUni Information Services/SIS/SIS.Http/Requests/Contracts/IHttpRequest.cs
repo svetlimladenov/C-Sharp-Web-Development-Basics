@@ -4,7 +4,7 @@
     using Cookies.Contracts;
     using Enums;
     using Headers.Contracts;
-
+    using Sessions.Contacts;
     public interface IHttpRequest
     {
         string Path { get; }
@@ -18,6 +18,8 @@
         IHttpHeaderCollection Headers { get; }
 
         IHttpCookieCollection Cookies { get; }
+
+        IHttpSession Session { get; set; }
 
         HttpRequestMethod RequestMethod { get; }
 
