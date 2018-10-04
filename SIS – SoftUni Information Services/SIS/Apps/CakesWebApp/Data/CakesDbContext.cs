@@ -12,9 +12,11 @@ namespace CakesWebApp.Data
 
         public DbSet<Order> Orders { get; set; }
 
+        public DbSet<OrderProduct> OrderProducts { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=Cakes;Integrated_Security=True;");
+            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=Cakes;Integrated Security=True;");
         }
     }
 }

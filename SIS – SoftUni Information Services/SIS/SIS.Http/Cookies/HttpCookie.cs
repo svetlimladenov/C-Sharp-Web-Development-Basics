@@ -27,6 +27,6 @@
 
         public bool IsNew { get; }
 
-        public override string ToString() => $"{this.Key}={this.Value}; Expires={this.Expires.ToLongTimeString()}";
+        public override string ToString() => $"{this.Key}={this.Value}; Expires={this.Expires.ToString("R")}";
     }
 }

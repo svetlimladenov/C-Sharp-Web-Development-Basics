@@ -15,4 +15,16 @@
     <ProjectReference Include="..\..\SIS.WebServer\SIS.WebServer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Views\Login.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\Register.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\Index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

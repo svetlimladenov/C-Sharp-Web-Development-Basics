@@ -1,4 +1,6 @@
-﻿namespace SIS.WebServer
+﻿using System.Threading;
+
+namespace SIS.WebServer
 {
     using System;
     using System.Net;
@@ -28,7 +30,9 @@
         {
             this.listener.Start();
             this.isRunning = true;
-            Console.WriteLine($"Server started working at http://{LocalHostIpAddress}:{this.port}");
+
+            Console.WriteLine($"Server started at http://{LocalHostIpAddress}:{port}");
+
             var task = Task.Run(this.ListenLoop);
             task.Wait();
         }
@@ -39,8 +43,7 @@
             {
                 var client = await this.listener.AcceptSocketAsync();
                 var connectionHandler = new ConnectionHandler(client, this.serverRoutingTable);
-                var responseTask = connectionHandler.ProcessRequestAsync();
-                responseTask.Wait();
+                await connectionHandler.ProcessRequestAsync();
             }
         }
     }

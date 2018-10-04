@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-using SIS.Http.Common;
-
-namespace SIS.Http.Cookies
+﻿namespace SIS.Http.Cookies
 {
+    using System;
+    using System.Linq;
+    using SIS.Http.Common;
     using System.Collections.Generic;
     using Contracts;
 
