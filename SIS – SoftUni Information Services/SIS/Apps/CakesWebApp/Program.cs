@@ -15,7 +15,7 @@
             serverRoutingTable.Reoutes[HttpRequestMethod.Get]["/login"] = request => new AccountController().Login(request);
             serverRoutingTable.Reoutes[HttpRequestMethod.Post]["/login"] = request => new AccountController().DoLogin(request);
             serverRoutingTable.Reoutes[HttpRequestMethod.Get]["/logout"] = request => new AccountController().Logout(request);
-
+            serverRoutingTable.Reoutes[HttpRequestMethod.Get]["/myProfile"] = request => new AccountController().MyProfile(request);
 
             serverRoutingTable.Reoutes[HttpRequestMethod.Get]["/register"] = request => new AccountController().Register(request);
             serverRoutingTable.Reoutes[HttpRequestMethod.Post]["/register"] =  request => new AccountController().DoRegister(request);

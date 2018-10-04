@@ -148,15 +148,20 @@ namespace SIS.Http.Requests
             var queryPairs = query.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var queryPair in queryPairs)
             {
-                var queryKvp = queryPair.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
+                var queryKvp = queryPair.Split(new[] { '=' }, 2 ,StringSplitOptions.RemoveEmptyEntries);
                 var queryKey = WebUtility.UrlDecode(queryKvp[0]);
-                var queryValue = WebUtility.UrlDecode(queryKvp[1]);
+               
 
                 if (queryKvp.Length != 2)
                 {
-                    return;
+                    dictionary.Add(queryKey,"");
                 }
-                dictionary.Add(queryKey, queryValue);
+                else
+                {
+                    var queryValue = WebUtility.UrlDecode(queryKvp[1]);
+                    dictionary.Add(queryKey, queryValue);
+                }
+                
             }
         }
 

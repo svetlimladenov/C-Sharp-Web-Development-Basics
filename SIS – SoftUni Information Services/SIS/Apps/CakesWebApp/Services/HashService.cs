@@ -6,6 +6,17 @@ namespace CakesWebApp.Services
 {
     public class HashService : IHashService
     {
+        public string StrongHash(string stringToHash)
+        {
+            var result = stringToHash;
+            for (int i = 0; i < 3; i++)
+            {
+                result = Hash(result);
+            }
+
+            return result;
+        }
+                 
         public string Hash(string stringToHash)
         {
             stringToHash = stringToHash + "myAppSalt12312341234#";

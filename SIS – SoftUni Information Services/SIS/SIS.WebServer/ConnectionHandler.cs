@@ -123,6 +123,13 @@ namespace SIS.WebServer
 
                     var httpResponse = this.HandleRequest(httpRequest);
 
+                    if (httpResponse.StatusCode == HttpResponseStatusCode.NotFound)
+                    {
+                        await this.PrepareResponse(new HtmlResult("Invalid URL</br>404 Not Found",
+                            HttpResponseStatusCode.NotFound));
+                        return;
+                    }
+
                     this.SetResponseSession(httpResponse, sessionId);
 
                     await this.PrepareResponse(httpResponse);

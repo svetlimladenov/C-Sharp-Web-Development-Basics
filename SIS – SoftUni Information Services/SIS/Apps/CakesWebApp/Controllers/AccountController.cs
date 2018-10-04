@@ -1,4 +1,10 @@
-﻿namespace CakesWebApp.Controllers
+﻿using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
+using SIS.Http.Enums;
+using SIS.Http.Responses;
+
+namespace CakesWebApp.Controllers
 {
     using System;
     using Models;
@@ -28,8 +34,9 @@
             var username = request.FormData["username"].ToString().Trim();
             var password = request.FormData["password"].ToString();
             var confirmPassword = request.FormData["confirmPassword"].ToString();
+            var regexUsernameValidator = @"^[a-z0-9_-]{4,20}$";
             //Validate
-            if (string.IsNullOrWhiteSpace(username) || username.Length < 4)
+            if (string.IsNullOrWhiteSpace(username) || username.Length < 4 || !Regex.IsMatch(username,regexUsernameValidator))
             {
                 return this.BadRequestError("Please provide valid username with length 4 or more letters.");
             }
@@ -101,7 +108,9 @@
             var cookieContent = this.UserCookieService.GetUserCookie(user.Username);
 
             var response = new RedirectResult("/");
-            response.Cookies.Add(new HttpCookie(GlobalConstants.userCookieName,cookieContent,7));
+            //TODO  : Cookie.HTTP ONLY !!!
+            var cookie = new HttpCookie(GlobalConstants.userCookieName, cookieContent, 7) { HttpOnly = true };
+            response.Cookies.Add(cookie);
             return response;
         }
 
@@ -116,6 +125,33 @@
             var response = new RedirectResult("/");
             response.Cookies.Add(cookie);
             return response;
+        }
+
+        public IHttpResponse MyProfile(IHttpRequest request)
+        {
+            var view = this.View("myProfile");
+            var viewText = Encoding.UTF8.GetString(view.Content);
+            var username = this.GetUsername(request);
+
+            if (username == null)
+            {
+                return new HtmlResult("Must be logged in",HttpResponseStatusCode.NotFound);
+            }
+
+            var dateOfRegistration =
+                this.Db.Users
+                    .FirstOrDefault(x => x.Username == username)
+                    ?.DateOfRegistration.AddHours(3).ToString("dd-MM-yyyy", CultureInfo.InvariantCulture);
+            var ordersCount = this.Db.Users.FirstOrDefault(x => username != null && x.Username == username).Orders.Count;
+
+            
+
+            viewText = viewText.Replace("{username}", username);
+            viewText = viewText.Replace("{registrationData}",dateOfRegistration);
+            viewText = viewText.Replace("{ordersCount}", ordersCount.ToString());
+
+            view = new HtmlResult(viewText,HttpResponseStatusCode.OK);
+            return view;
         }
     }
 }
