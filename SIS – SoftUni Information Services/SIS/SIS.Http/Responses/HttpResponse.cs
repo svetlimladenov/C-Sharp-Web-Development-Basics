@@ -40,7 +40,7 @@
 
         public void AddCookie(HttpCookie cookie)
         {
-            CoreValidator.ThrowIfNull(cookie,nameof(cookie));
+            CoreValidator.ThrowIfNull(cookie, nameof(cookie));
             this.Cookies.Add(cookie);
         }
 
@@ -58,7 +58,10 @@
 
             if (this.Cookies.HasCookies())
             {
-                result.AppendLine($"Set-Cookie: {this.Cookies}");
+                foreach (var cookie in this.Cookies)
+                {
+                    result.AppendLine($"Set-Cookie: {cookie}");
+                }
             }
 
             result.AppendLine();

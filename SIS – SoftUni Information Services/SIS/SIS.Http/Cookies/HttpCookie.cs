@@ -1,4 +1,6 @@
-﻿namespace SIS.Http.Cookies
+﻿using SIS.Http.Common;
+
+namespace SIS.Http.Cookies
 {
     using System;
     public class HttpCookie
@@ -7,6 +9,8 @@
 
         public HttpCookie(string key, string value, int expires = HttpCookieDefaultExpirationDays)
         {
+            CoreValidator.ThrowIfNullOrEmpty(key,nameof(key));
+            CoreValidator.ThrowIfNullOrEmpty(value,nameof(value));
             this.Key = key;
             this.Value = value;
             this.IsNew = true;
@@ -23,10 +27,15 @@
 
         public string Value { get; }
 
-        public DateTime Expires { get; }
+        public DateTime Expires { get; private set; }
 
         public bool IsNew { get; }
 
-        public override string ToString() => $"{this.Key}={this.Value}; Expires={this.Expires.ToString("R")}";
+        public void Delete()
+        {
+            this.Expires = DateTime.UtcNow.AddDays(-1);
+        }
+
+        public override string ToString() => $"{this.Key}={this.Value}; Expires={this.Expires:R}";
     }
 }

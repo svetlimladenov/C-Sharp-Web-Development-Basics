@@ -119,6 +119,10 @@ namespace SIS.Http.Requests
                 return;
             }
             var query = this.Url.Split(new[] { '?' }, StringSplitOptions.RemoveEmptyEntries).Last();
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return;
+            }
             //register/?name=Ivan&age=12
             this.ParseQuery(query, this.QueryData);
         }

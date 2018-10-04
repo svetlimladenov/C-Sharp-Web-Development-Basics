@@ -1,19 +1,18 @@
-﻿using System;
-using CakesWebApp.Models;
-using CakesWebApp.Services;
-
-namespace CakesWebApp.Controllers
+﻿namespace CakesWebApp.Controllers
 {
+    using System;
+    using Models;
+    using Services;
+    using SIS.Http.Cookies;
     using System.Linq;
-    using Data;
     using SIS.Http.Requests.Contracts;
-    using SIS.Http.Enums;
     using SIS.WebServer.Results;
     using SIS.Http.Responses.Contracts;
-
+    using GlobalConst;
     public class AccountController : BaseController
     {
         private IHashService hashService;
+
         public AccountController()
         {
             this.hashService = new HashService();
@@ -71,7 +70,7 @@ namespace CakesWebApp.Controllers
                 //TODO : Log error 
                 return this.ServerError(e.Message);
             }
-            
+
             //TODO : Login
 
             //Redirect...
@@ -81,6 +80,42 @@ namespace CakesWebApp.Controllers
         public IHttpResponse Login(IHttpRequest request)
         {
             return this.View("Login");
+        }
+
+        public IHttpResponse DoLogin(IHttpRequest request)
+        {
+            //Validate user
+            //Save cookie/session with user
+            //redirect
+            var username = request.FormData["username"].ToString().Trim();
+            var password = request.FormData["password"].ToString();
+
+            var hashedPassword = this.hashService.Hash(password);
+
+            var user = this.Db.Users.FirstOrDefault(x => x.Username == username && x.Password == hashedPassword);
+            if (user == null)
+            {
+                return this.BadRequestError("Invalid username or password.");
+            }
+
+            var cookieContent = this.UserCookieService.GetUserCookie(user.Username);
+
+            var response = new RedirectResult("/");
+            response.Cookies.Add(new HttpCookie(GlobalConstants.userCookieName,cookieContent,7));
+            return response;
+        }
+
+        public IHttpResponse Logout(IHttpRequest request)
+        {
+            if (!request.Cookies.ContainsCookie(GlobalConstants.userCookieName))
+            {
+                return new RedirectResult("/");
+            }
+            var cookie = request.Cookies.GetCookie(GlobalConstants.userCookieName);
+            cookie.Delete();
+            var response = new RedirectResult("/");
+            response.Cookies.Add(cookie);
+            return response;
         }
     }
 }

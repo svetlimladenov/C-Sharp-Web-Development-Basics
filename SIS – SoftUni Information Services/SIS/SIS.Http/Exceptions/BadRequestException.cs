@@ -7,7 +7,7 @@
         private const string defaultMessage = "The Request was malformed or contains unsupported elements.";
 
         public BadRequestException()
-        :base(defaultMessage)
+            : this(defaultMessage)
         {
         }
 
