@@ -16,10 +16,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Views\add.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Views\Login.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Views\myProfile.html">
+    <None Update="Views\profile.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Views\Register.html">

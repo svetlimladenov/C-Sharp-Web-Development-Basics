@@ -127,15 +127,15 @@ namespace CakesWebApp.Controllers
             return response;
         }
 
-        public IHttpResponse MyProfile(IHttpRequest request)
+        public IHttpResponse Profile(IHttpRequest request)
         {
-            var view = this.View("myProfile");
+            var view = this.View("profile");
             var viewText = Encoding.UTF8.GetString(view.Content);
             var username = this.GetUsername(request);
 
             if (username == null)
             {
-                return new HtmlResult("Must be logged in",HttpResponseStatusCode.NotFound);
+                return new RedirectResult("/register");
             }
 
             var dateOfRegistration =
