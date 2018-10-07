@@ -3,19 +3,24 @@ using System.Collections.Generic;
 
 namespace IRunesWebApp.Models
 {
-    public class Track : BaseModel<int>
+    public class Track
     {
+
         public Track()
         {
-            this.Albums = new HashSet<TrackAlbum>();
+            this.TrackAlbums = new HashSet<TrackAlbum>();
         }
+
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
+        //link for the track video
         public string Link { get; set; }
 
         public decimal Price { get; set; }
 
-        public virtual ICollection<TrackAlbum> Albums { get; set; }
+        public ICollection<TrackAlbum> TrackAlbums { get; set; }
+
     }
 }

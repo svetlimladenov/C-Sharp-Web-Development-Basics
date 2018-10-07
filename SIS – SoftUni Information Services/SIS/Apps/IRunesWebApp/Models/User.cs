@@ -1,14 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using IRunesWebApp.Models;
 
 namespace IRunesWebApp.Models
 {
-    public class User : BaseModel<int>
+    public class User
     {
+        public User()
+        {
+            this.UserAlbums = new HashSet<UserAlbum>();
+        }
+        public string Id { get; set; }
+
         public string Username { get; set; }
 
-        public string HashedPassword { get; set; }
+        public string Password { get; set; }
 
         public string Email { get; set; }
+
+        public ICollection<UserAlbum> UserAlbums { get; set; }
     }
 }

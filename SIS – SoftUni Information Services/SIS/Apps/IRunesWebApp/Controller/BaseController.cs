@@ -10,6 +10,7 @@ namespace IRunesWebApp.Controller
 {
     public class BaseController
     {
+        protected readonly string userCookieAuth = ".auth-IRunes";
         public BaseController()
         {
             this.Db = new IRunesDbContext();

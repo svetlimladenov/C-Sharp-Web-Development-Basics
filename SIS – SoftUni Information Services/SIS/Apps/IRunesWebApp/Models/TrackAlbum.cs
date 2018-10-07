@@ -2,12 +2,13 @@
 
 namespace IRunesWebApp.Models
 {
-    public class TrackAlbum : BaseModel<int>
+    public class TrackAlbum
     {
-        public Guid TrackId { get; set; }
-        public virtual Track Track { get; set; }
+        public string AlbumId { get; set; }
+        public Album Album { get; set; }
 
-        public Guid AlbumId { get; set; }
-        public virtual Album Album { get; set; }
+        public string TrackId { get; set; }
+        public Track Track { get; set; }
+
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace IRunesWebApp.Migrations
 {
@@ -12,11 +10,9 @@ namespace IRunesWebApp.Migrations
                 name: "Albums",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    Cover = table.Column<string>(nullable: true),
-                    Price = table.Column<decimal>(nullable: false)
+                    Cover = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -27,8 +23,7 @@ namespace IRunesWebApp.Migrations
                 name: "Tracks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Link = table.Column<string>(nullable: true),
                     Price = table.Column<decimal>(nullable: false)
@@ -42,10 +37,9 @@ namespace IRunesWebApp.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(nullable: false),
                     Username = table.Column<string>(nullable: true),
-                    HashedPassword = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -57,39 +51,59 @@ namespace IRunesWebApp.Migrations
                 name: "TracksAlbums",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    TrackId = table.Column<Guid>(nullable: false),
-                    TrackId1 = table.Column<int>(nullable: true),
-                    AlbumId = table.Column<Guid>(nullable: false),
-                    AlbumId1 = table.Column<int>(nullable: true)
+                    AlbumId = table.Column<string>(nullable: false),
+                    TrackId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TracksAlbums", x => x.Id);
+                    table.PrimaryKey("PK_TracksAlbums", x => new { x.AlbumId, x.TrackId });
                     table.ForeignKey(
-                        name: "FK_TracksAlbums_Albums_AlbumId1",
-                        column: x => x.AlbumId1,
+                        name: "FK_TracksAlbums_Albums_AlbumId",
+                        column: x => x.AlbumId,
                         principalTable: "Albums",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TracksAlbums_Tracks_TrackId1",
-                        column: x => x.TrackId1,
+                        name: "FK_TracksAlbums_Tracks_TrackId",
+                        column: x => x.TrackId,
                         principalTable: "Tracks",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsersAlbums",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    AlbumId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsersAlbums", x => new { x.AlbumId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_UsersAlbums_Albums_AlbumId",
+                        column: x => x.AlbumId,
+                        principalTable: "Albums",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UsersAlbums_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TracksAlbums_AlbumId1",
+                name: "IX_TracksAlbums_TrackId",
                 table: "TracksAlbums",
-                column: "AlbumId1");
+                column: "TrackId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TracksAlbums_TrackId1",
-                table: "TracksAlbums",
-                column: "TrackId1");
+                name: "IX_UsersAlbums_UserId",
+                table: "UsersAlbums",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -98,13 +112,16 @@ namespace IRunesWebApp.Migrations
                 name: "TracksAlbums");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "UsersAlbums");
+
+            migrationBuilder.DropTable(
+                name: "Tracks");
 
             migrationBuilder.DropTable(
                 name: "Albums");
 
             migrationBuilder.DropTable(
-                name: "Tracks");
+                name: "Users");
         }
     }
 }
