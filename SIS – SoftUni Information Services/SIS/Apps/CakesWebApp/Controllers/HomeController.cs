@@ -7,14 +7,14 @@ namespace CakesWebApp.Controllers
 {
     public class HomeController : BaseController
     {
-        public IHttpResponse Index(IHttpRequest request)
+        public IHttpResponse Index()
         {
             return this.View("Index");
         }
 
-        public IHttpResponse HelloUser(IHttpRequest request)
+        public IHttpResponse HelloUser()
         {
-            return new HtmlResult($"<h1>Hello, {this.GetUsername(request)}</h1>", HttpResponseStatusCode.OK);
+            return new HtmlResult($"<h1>Hello,  </h1>", HttpResponseStatusCode.OK);
         }
     }
 }
