@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CakesWebApp.Models
 {
-    using System;
     public class User : BaseModel<int>
     {
         public User()

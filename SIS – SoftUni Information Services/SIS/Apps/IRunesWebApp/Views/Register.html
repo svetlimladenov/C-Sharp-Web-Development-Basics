@@ -1,38 +1,23 @@
-﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-    <h1>IRunes</h1>
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/Users/Login">Login</a></li>
-        <li><a href="/Users/Register">Register</a></li>
-    </ul>
-    <hr />
-
-    <h1>Register</h1>
-    <form method="post" action="/Users/Register">
-        <div>
-            Username<input type="text" name="username" placeholder="Username..." />
-        </div>
-        <div>
-            Password<input type="password" name="password" placeholder="Password..." />
-        </div>
-        <div>
-            Confirm Password<input type="password" name="confirmpassword" placeholder="Confirtm Password..." />
-        </div>
-        <div>
-            Email<input type="text" name="email" placeholder="Email..." />
-        </div>
-        <div>
-            <input type="submit" value="register" />
-        </div>
-    </form>
-    <hr />
-    <footer>Copyright &copy; Sanity Design Studios. All rights reserved.</footer>
-</body>
-</html>
+﻿<h1 class="text-center text-success">Register</h1>
+<form method="post" action="/Users/Register" class="container">
+    <hr style="height: 2px;" class="bg-success" />
+    <div class="form-group">
+        <label for="exampleInputUsername">Username</label>
+        <input type="text" name="username" placeholder="Username..." required class="form-control bg-white" id="exampleInputUsername"/>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword">Password</label>
+        <input type="password" name="password" required placeholder="Password..." class="form-control bg-white" id="exampleInputPassword"/>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputConfirmPassword">Confirm Password</label>
+        <input type="password" name="confirmpassword" required placeholder="Confirtm Password..." class="form-control bg-white" id="exampleInputConfirmPassword"/>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail">Email</label>
+        <input type="email" name="email" placeholder="Email..." class="form-control bg-white" id="exampleInputEmail"/>
+    </div>
+    <div class="text-center">
+        <input type="submit" value="Register" class="btn btn-success"/>
+    </div>
+</form>

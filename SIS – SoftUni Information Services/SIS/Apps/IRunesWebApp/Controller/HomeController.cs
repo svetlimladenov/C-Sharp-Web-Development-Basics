@@ -21,7 +21,7 @@ namespace IRunesWebApp.Controller
         {
             if (request.Cookies.GetCookie(this.userCookieAuth) == null)
             {
-                return this.View("Index");
+                return this.ViewLoggedOut("Index");
             }
             else
             {

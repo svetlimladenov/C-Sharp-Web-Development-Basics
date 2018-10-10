@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace CakesWebApp.Models
 {
@@ -8,6 +9,7 @@ namespace CakesWebApp.Models
         {
             this.Orders = new HashSet<OrderProduct>();
         }
+
         public string Name { get; set; }
 
         public decimal Price { get; set; }

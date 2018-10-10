@@ -1,4 +1,9 @@
-﻿namespace CakesWebApp.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
+
+namespace CakesWebApp.Models
 {
     public class OrderProduct : BaseModel<int>
     {

@@ -1,4 +1,8 @@
-﻿namespace CakesWebApp.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace CakesWebApp.Models
 {
     public abstract class BaseModel<T>
     {

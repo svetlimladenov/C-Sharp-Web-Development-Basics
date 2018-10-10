@@ -1,34 +1,24 @@
-﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-<h1>IRunes</h1>
-<ul>
-    <li><a href="/">Home</a></li>    
-    <li><a href="/Albums/All">Albums</a></li>
-    <li><a href="/Users/Logout">Logout</a></li>
-</ul>
-<hr />
-<img src="{albumCoverUrl}" alt="cover"/>
-<div>
-    <h4>Name : {albumName}</h4>
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5 text-center float-left">
+            <img src="{albumCoverUrl}" alt="cover" class="img-responsive"  style="height: 350px; width: 350px;  object-fit: cover;"/>
+            <div>
+                <h4>Album Name : {albumName}</h4>
+            </div>
+            <div>
+                <h4>Album Price : $ {albumPrice}</h4>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <a href="Tracks/Create?albumId={albumId}" class="btn btn-success btn-sm col-md-2">Create Track</a>
+                    <div class="col-md-8"></div>
+                    <a href="/Albums/All" class="btn btn-success btn-sm col-md-2">Back to All</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <h4>Tracks</h4>
+            {tracks}
+        </div>
+    </div>
 </div>
-<div>
-    <h4>Price : {albumPrice}</h4>
-</div>
-<h3>Tracks</h3>
-<hr/>
-<div>
-    <a href="Tracks/Create?albumId={albumId}">Create Track</a>
-</div>
-<hr/>
-<div>
-    {tracks}
-</div>
-<footer>Copyright &copy; Sanity Design Studios. All rights reserved.</footer>
-</body>
-</html>

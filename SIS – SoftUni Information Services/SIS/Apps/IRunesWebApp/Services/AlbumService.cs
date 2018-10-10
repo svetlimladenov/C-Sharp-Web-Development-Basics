@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using CakesWebApp.Controllers;
 using IRunesWebApp.Data;
 using IRunesWebApp.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ using SIS.WebServer.Results;
 
 namespace IRunesWebApp.Services
 {
-    public class AlbumService
+    public class AlbumService : BaseController
     {
         private readonly UserService userService;
         public AlbumService()
@@ -36,6 +37,11 @@ namespace IRunesWebApp.Services
                 Name = albumName,
                 Cover = coverUrl
             };
+
+            if (string.IsNullOrWhiteSpace(albumName) || string.IsNullOrWhiteSpace(albumName))
+            {
+                return BadRequestError("Fill in all the blanks.");
+            }
 
             var albumExists = this.Context.Albums.Any(x => x.Name == album.Name);
             if (!albumExists)

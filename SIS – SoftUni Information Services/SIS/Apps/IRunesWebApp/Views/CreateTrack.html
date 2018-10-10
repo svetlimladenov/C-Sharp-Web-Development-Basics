@@ -1,37 +1,29 @@
-﻿<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-    <h1>IRunes</h1>
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/Albums/All">Albums</a></li>
-        <li><a href="/Users/Logout">Logout</a></li>
-    </ul>
-    <hr />
-    <h1>Create Track</h1>
-    <hr />
-    <form method="post" action="/Albums/Tracks/Create?albumId={albumId}">
-        <div>
-            Name<input type="text" name="trackName" placeholder="Name..." />
+﻿<h1 class="text-center text-success">Create Track</h1>
+<form method="post" action="/Albums/Tracks/Create?albumId={albumId}" class="container">
+    <hr style="height: 2px;" class="bg-success" />
+    <div class="row">
+        <div class="col-md-12">
+            <label for="exampleInputName">Name</label>
+            <input type="text" name="trackName" required placeholder="Name..." class="form-control bg-white" id="exampleInputName" />
         </div>
-        <div>
-            Link<input type="text" name="trackLink" placeholder="Link..." />
+    </div>
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-5">
+            <label for="exampleInputLink">Link</label>
+            <input type="url" name="trackLink" required placeholder="Link..." class="form-control bg-white" id="exampleInputLink" />
         </div>
-        <div>
-            Price<input type="text" name="trackPrice" placeholder="Price..." />
+        <div class="col-md-2"></div>
+        <div class="col-md-5">
+            <label for="exampleInputPrice">Price</label>
+            <input type="number" step="0.01" min="0.01" name="trackPrice" required placeholder="Price..." class="form-control bg-white" id="exampleInputLink" />
         </div>
-        <div>
-            <input type="submit" value="Create" />
-        </div>
-    </form>
-    <hr />
-    <a href="/Albums/All">Back to Album</a>
-    <hr />
-<footer>Copyright &copy; Sanity Design Studios. All rights reserved.</footer>
-</body>
-</html>
+    </div>
+    <hr style="height: 2px;" class="bg-success" />
+    <div class="row text-center" style="margin-top: 40px;">
+        <div class="col-md-2"></div>
+        <input type="submit" value="Create" class="btn btn-success btn-sm col-md-2" />
+        <div class="col-md-4"></div>
+        <a href="/Albums/All" class="btn btn-success btn-sm col-md-2">Back to Album</a>
+        <div class="col-md-2"></div>
+    </div>
+</form>

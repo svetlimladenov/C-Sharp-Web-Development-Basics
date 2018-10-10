@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/myCustomStyle.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-light bg-success">
+            <a href="/" class="navbar-brand text-white">
+                <h2>IRunes</h2>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a href="/" class="nav-item nav-link text-white">Home</a>
+                    <a href="/Users/Login" class="nav-item nav-link text-white">Login</a>
+                    <a href="/Users/Register" class="nav-item nav-link text-white">Register</a>
+                </div>
+            </div>
+        </nav>
+        <hr style="height: 2px;" class="bg-success" />
+        @RenderBody()
+        <footer>
+            <hr style="height: 2px;" class="bg-success" />
+            <h6>Copyright &copy; Sanity Design Studios. All rights reserved.</h6>
+        </footer>
+
+        <script src="../js/jquery-3.3.1.slim.min.js" type="text/javascript"></script>
+        <script src="../js/popper.min.js" type="text/javascript"></script>
+        <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    </div>
+</body>
+</html>

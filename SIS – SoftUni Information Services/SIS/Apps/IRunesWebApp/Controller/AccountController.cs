@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using CakesWebApp.GlobalConst;
 using CakesWebApp.Services;
 using IRunesWebApp.Models;
 using SIS.Http.Cookies;
@@ -29,7 +28,7 @@ namespace IRunesWebApp.Controller
             {
                 return this.badRequestService.BadRequestError("You are already logged in.");
             }
-            return this.View("Login");
+            return this.ViewLoggedOut("Login");
         }
 
         public IHttpResponse DoLogin(IHttpRequest request)
@@ -58,7 +57,7 @@ namespace IRunesWebApp.Controller
                 return this.badRequestService.BadRequestError("You must log out, if you want to make a new registration.");
             }
 
-            return this.View("Register");
+            return this.ViewLoggedOut("Register");
         }
 
         public IHttpResponse DoRegister(IHttpRequest request)

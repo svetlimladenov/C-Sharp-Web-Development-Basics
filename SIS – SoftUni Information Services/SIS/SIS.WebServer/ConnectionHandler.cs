@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System.IO;
+using System.Net;
+using System.Threading;
 
 namespace SIS.WebServer
 {
@@ -58,21 +60,34 @@ namespace SIS.WebServer
             {
                 return null;
             }
-            
+
             return new HttpRequest(result.ToString());
+        }
+
+        private IHttpResponse ReturnIfResource(string path)
+        {
+            path = "/netcoreapp2.1/Resources" + path;
+            var fixedPath = WebUtility.UrlDecode(path);
+            string fullPath = Path.GetFullPath(".." + path);
+            if (File.Exists(fullPath))
+            {
+                var resourceFileContent = File.ReadAllBytes(fullPath);
+                return new InlineResourceResult(resourceFileContent, HttpResponseStatusCode.OK);
+            }
+            return new HttpResponse(HttpResponseStatusCode.NotFound);
+
         }
 
         private IHttpResponse HandleRequest(IHttpRequest httpRequest)
         {
-            if (!this.serverRoutingTable.Reoutes.ContainsKey(httpRequest.RequestMethod) ||
-                !this.serverRoutingTable.Reoutes[httpRequest.RequestMethod].ContainsKey(httpRequest.Path))
+            if (!this.serverRoutingTable.Routes.ContainsKey(httpRequest.RequestMethod) ||
+                !this.serverRoutingTable.Routes[httpRequest.RequestMethod].ContainsKey(httpRequest.Path))
             {
-                
-                return new HttpResponse(HttpResponseStatusCode.NotFound);
+                return this.ReturnIfResource(httpRequest.Path);
             }
-            
-            return this.serverRoutingTable.Reoutes[httpRequest.RequestMethod][httpRequest.Path].Invoke(httpRequest);
-            
+
+            return this.serverRoutingTable.Routes[httpRequest.RequestMethod][httpRequest.Path].Invoke(httpRequest);
+
         }
 
         private async Task PrepareResponse(IHttpResponse httpResponse)
@@ -133,7 +148,7 @@ namespace SIS.WebServer
                     this.SetResponseSession(httpResponse, sessionId);
 
                     await this.PrepareResponse(httpResponse);
-                    
+
                 }
             }
             catch (BadRequestException e)

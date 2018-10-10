@@ -27,8 +27,21 @@ namespace IRunesWebApp.Controller
         {
             var trackName = request.FormData["trackName"].ToString().Trim();
             var trackLink = request.FormData["trackLink"].ToString().Trim();
-            var trackPrice = decimal.Parse(request.FormData["trackPrice"].ToString().Trim());
+
+            var trackPriceString = request.FormData["trackPrice"].ToString().Trim();
             var albumId = request.QueryData["albumId"].ToString();
+
+            if (string.IsNullOrWhiteSpace(trackName) || string.IsNullOrWhiteSpace(trackLink) || string.IsNullOrWhiteSpace(trackPriceString))
+            {
+                return BadRequestError("Fill in all the blanks.");
+            }
+
+            if (!Uri.IsWellFormedUriString(trackLink,UriKind.RelativeOrAbsolute))
+            {
+                return BadRequestError("Invalid URL.");
+            }
+
+            var trackPrice = decimal.Parse(trackPriceString);
 
             var track = new Track
             {

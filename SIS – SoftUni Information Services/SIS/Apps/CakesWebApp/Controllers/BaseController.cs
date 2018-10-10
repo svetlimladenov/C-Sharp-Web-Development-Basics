@@ -1,18 +1,20 @@
-﻿using System.IO;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using CakesWebApp.Data;
+using CakesWebApp.Services;
 using SIS.Http.Enums;
+using SIS.Http.Requests;
 using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses;
 using SIS.Http.Responses.Contracts;
 using SIS.WebServer.Results;
-using CakesWebApp.GlobalConst;
-using CakesWebApp.Services;
 
 namespace CakesWebApp.Controllers
 {
     public abstract class BaseController
     {
-
         protected BaseController()
         {
             this.Db = new CakesDbContext();
@@ -20,35 +22,64 @@ namespace CakesWebApp.Controllers
         }
 
         protected CakesDbContext Db { get; }
-
+        
         protected IUserCookieService UserCookieService { get; }
+
         protected string GetUsername(IHttpRequest request)
         {
-            if (!request.Cookies.ContainsCookie(GlobalConstants.userCookieName))
+            if (!request.Cookies.ContainsCookie(".auth-cakes"))
             {
                 return null;
             }
-            var cookie = request.Cookies.GetCookie(GlobalConstants.userCookieName);
+
+            var cookie = request.Cookies.GetCookie(".auth-cakes");
             var cookieContent = cookie.Value;
             var userName = this.UserCookieService.GetUserData(cookieContent);
-
             return userName;
+
         }
 
-        protected IHttpResponse View(string viewName)
+        protected IHttpResponse View(string viewName, IDictionary<string, string> viewBag = null)
         {
-            var content = File.ReadAllText("Views/" + viewName + ".html");
-            return new HtmlResult(content, HttpResponseStatusCode.OK);
+            if (viewBag == null)
+            {
+                viewBag = new Dictionary<string, string>();
+            }
+
+            var allContent = this.GetViewContent(viewName, viewBag);
+            return new HtmlResult(allContent, HttpResponseStatusCode.OK);
         }
 
         protected IHttpResponse BadRequestError(string errorMessage)
         {
-            return new HtmlResult($"<h1>{errorMessage}</h1>", HttpResponseStatusCode.BadRequest);
+            var viewBag = new Dictionary<string, string>();
+            viewBag.Add("Error", errorMessage);
+            var allContent = this.GetViewContent("Error", viewBag);
+
+            return new HtmlResult(allContent, HttpResponseStatusCode.BadRequest);
         }
 
         protected IHttpResponse ServerError(string errorMessage)
         {
-            return new HtmlResult($"<h1>{errorMessage}</h1>", HttpResponseStatusCode.InternalServerError);
+            var viewBag = new Dictionary<string, string>();
+            viewBag.Add("Error", errorMessage);
+            var allContent = this.GetViewContent("Error", viewBag);
+
+            return new HtmlResult(allContent, HttpResponseStatusCode.InternalServerError);
+        }
+
+        private string GetViewContent(string viewName, 
+            IDictionary<string, string> viewBag)
+        {
+            var layoutContent = File.ReadAllText("Views/_Layout.html");
+            var content = File.ReadAllText("Views/" + viewName + ".html");
+            foreach (var item in viewBag)
+            {
+                content = content.Replace("@Model." + item.Key, item.Value);
+            }
+
+            var allContent = layoutContent.Replace("@RenderBody()", content);
+            return allContent;
         }
     }
 }

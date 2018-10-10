@@ -38,6 +38,11 @@ namespace IRunesWebApp.Services
                 return badRequestService.BadRequestError("Invalid username or password.");
             }
 
+            if (user.Password != hashedPassword)
+            {
+                return badRequestService.BadRequestError("Invalid username or password.");
+            }
+
             var cookieContent = this.UserCookiesService.GetUserCookie(user.Username);
 
             var response = new RedirectResult("/");

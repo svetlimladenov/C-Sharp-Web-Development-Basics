@@ -40,7 +40,7 @@ namespace IRunesWebApp.Controller
             var sb = new StringBuilder();
             foreach (var album in query)
             {
-                sb.AppendLine($"<a href=\"/Albums/Details?id={album.Id}\">{album.Name}</a></br>");
+                sb.AppendLine($"<h5><a href=\"/Albums/Details?id={album.Id}\">{album.Name}</a></h5></br>");
             }
 
             var response = this.View("AllAlbums");
@@ -75,7 +75,7 @@ namespace IRunesWebApp.Controller
             var view = Encoding.UTF8.GetString(response.Content);
             view = view.Replace("{albumCoverUrl}", album.Cover);
             view = view.Replace("{albumName}", album.Name);
-            view = view.Replace("{albumPrice}", album.Price.ToString());
+           // view = view.Replace("{albumPrice}", album.Price.ToString());
             view = view.Replace("{albumId}", album.Id.ToString());
 
             var albumId = album.Id;
@@ -86,13 +86,16 @@ namespace IRunesWebApp.Controller
 
             var sb = new StringBuilder();
             var counter = 0;
+            decimal allTracksSum = 0.0m;
             foreach (var track in query)
             {
                 counter++;
-
+                allTracksSum += track.Price;
                 sb.AppendLine($"<a href=\"/Albums/Tracks/Details?albumId={albumId}&trackId={track.Id}\">{counter}. {track.Name}</a></br>");
             }
 
+            allTracksSum = Math.Round(allTracksSum - (allTracksSum * 0.13m),2);
+            view = view.Replace("{albumPrice}", allTracksSum.ToString());
             view = view.Replace("{tracks}", sb.ToString());
             return new HtmlResult(view, HttpResponseStatusCode.OK);
         }

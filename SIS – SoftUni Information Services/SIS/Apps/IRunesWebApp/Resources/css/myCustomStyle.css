@@ -1,0 +1,20 @@
+﻿a.doHover {
+    color: #ffc107;
+    text-decoration: none;
+    transition-duration: 1s;
+}
+a.doHover:hover {
+    color: white;
+    text-decoration: none;
+    transition-duration: 1s;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    color: black;
+    text-align: center;
+}
