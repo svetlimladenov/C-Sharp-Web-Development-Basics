@@ -1,4 +1,5 @@
-﻿using SIS.Http.Enums;
+﻿using System.Collections.Generic;
+using SIS.Http.Enums;
 using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses.Contracts;
 using SIS.WebServer.Results;
@@ -14,7 +15,10 @@ namespace CakesWebApp.Controllers
 
         public IHttpResponse HelloUser()
         {
-            return new HtmlResult($"<h1>Hello,  </h1>", HttpResponseStatusCode.OK);
+            return this.View("HelloUser", new Dictionary<string, string>
+            {
+                {"Username", this.User }
+            });
         }
     }
 }
