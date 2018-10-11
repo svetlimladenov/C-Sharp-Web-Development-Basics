@@ -8,17 +8,20 @@ using SIS.Http.Requests;
 using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses;
 using SIS.Http.Responses.Contracts;
+using SIS.MvcFramework;
 using SIS.WebServer.Results;
 
 namespace CakesWebApp.Controllers
 {
     public class CakesController : BaseController
     {
+        [HttpGet("/cakes/add")]
         public IHttpResponse AddCakes()
         {
             return this.View("AddCakes");
         }
 
+        [HttpPost("/cakes/add")]
         public IHttpResponse DoAddCakes()
         {
             var name = this.Request.FormData["name"].ToString().Trim().UrlDecode();
@@ -49,6 +52,8 @@ namespace CakesWebApp.Controllers
             return this.Redirect("/");
         }
 
+        //cakes/view/?id=1
+        [HttpGet("/cakes/view")]
         public IHttpResponse ById()
         {
             var id = int.Parse(this.Request.QueryData["id"].ToString());

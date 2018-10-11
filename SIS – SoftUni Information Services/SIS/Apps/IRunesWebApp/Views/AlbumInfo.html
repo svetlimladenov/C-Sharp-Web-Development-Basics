@@ -1,16 +1,17 @@
 ﻿<div class="container-fluid">
     <div class="row">
         <div class="col-md-5 text-center float-left">
-            <img src="{albumCoverUrl}" alt="cover" class="img-responsive"  style="height: 350px; width: 350px;  object-fit: cover;"/>
+            <img src="@Model.AlbumCoverUrl" alt="cover" class="img-responsive"  style="height: 350px; width: 350px;  object-fit: cover;"/>
             <div>
-                <h4>Album Name : {albumName}</h4>
+                <h4>Album Name :  @Model.AlbumName</h4>
+                
             </div>
             <div>
-                <h4>Album Price : $ {albumPrice}</h4>
+                <h4>Album Price : $ @Model.AlbumPrice</h4>
             </div>
             <div class="container-fluid">
                 <div class="row">
-                    <a href="Tracks/Create?albumId={albumId}" class="btn btn-success btn-sm col-md-2">Create Track</a>
+                    <a href="Tracks/Create?albumId={@Model.AlbumId}" class="btn btn-success btn-sm col-md-2">Create Track</a>
                     <div class="col-md-8"></div>
                     <a href="/Albums/All" class="btn btn-success btn-sm col-md-2">Back to All</a>
                 </div>
@@ -18,7 +19,7 @@
         </div>
         <div class="col-md-7">
             <h4>Tracks</h4>
-            {tracks}
+            @Model.Tracks
         </div>
     </div>
 </div>

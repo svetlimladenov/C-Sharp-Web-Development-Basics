@@ -9,7 +9,7 @@ using SIS.Http.Responses.Contracts;
 
 namespace SIS.MvcFramework
 {
-    public class Controller
+    public abstract class Controller
     {
         protected Controller()
         {
@@ -25,12 +25,13 @@ namespace SIS.MvcFramework
         {
             get
             {
-                if (!this.Request.Cookies.ContainsCookie(".auth-cakes"))
+                if (!this.Request.Cookies.ContainsCookie(".auth-IRunes"))
                 {
                     return null;
                 }
-
-                var cookie = this.Request.Cookies.GetCookie(".auth-cakes");
+                //".auth-IRunes"
+                //.auth-cakes
+                var cookie = this.Request.Cookies.GetCookie(".auth-IRunes");
                 var cookieContent = cookie.Value;
                 var userName = this.UserCookieService.GetUserData(cookieContent);
                 return userName;
@@ -50,6 +51,18 @@ namespace SIS.MvcFramework
             this.PrepareHtmlResult(allContent);
             return this.Response;
         }
+
+        protected IHttpResponse ViewLoggedOut(string viewName, IDictionary<string, string> viewBag = null)
+        {
+            if (viewBag == null)
+            {
+                viewBag = new Dictionary<string, string>();
+            }
+            var allContent = this.GetViewContentLoggedOut(viewName);
+            this.PrepareHtmlResult(allContent);
+            return this.Response;
+        }
+
 
         protected IHttpResponse File(byte[] content)
         {
@@ -106,6 +119,15 @@ namespace SIS.MvcFramework
             var allContent = layoutContent.Replace("@RenderBody()", content);
             return allContent;
         }
+
+        private string GetViewContentLoggedOut(string viewName)
+        {
+            var layoutContent = System.IO.File.ReadAllText("Views/_Layout_LoggedOut.html");
+            var content = System.IO.File.ReadAllText("Views/" + viewName + ".html");
+            var allContent = layoutContent.Replace("@RenderBody()", content);
+            return allContent;
+        }
+
 
         private void PrepareHtmlResult(string content)
         {
