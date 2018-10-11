@@ -6,10 +6,11 @@ using IRunesWebApp.Data;
 using SIS.Http.Enums;
 using SIS.Http.Responses.Contracts;
 using SIS.WebServer.Results;
+using SIS.MvcFramework;
 
 namespace IRunesWebApp.Controller
 {
-    public class BaseController
+    public class BaseController : SIS.MvcFramework.Controller
     {
         protected readonly string userCookieAuth = ".auth-IRunes";
         public BaseController()

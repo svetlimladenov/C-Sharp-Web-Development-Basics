@@ -1,16 +1,25 @@
-﻿namespace SIS.Http.Enums
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SIS.Http.Enums
 {
     public enum HttpResponseStatusCode
     {
         OK = 200,
         Created = 201,
-        MovedPermanently = 301,
+        [Display(Name = "Permanent redirect")]
+        PermanentRedirect = 301,
         Found = 302,
+        [Display(Name = "See other")]
         SeeOther = 303,
+        [Display(Name = "Temporary redirect")]
+        TemporaryRedirect = 307,
+        [Display(Name = "Bad request")]
         BadRequest = 400,
         Unauthorized = 401,
         Forbidden = 403,
+        [Display(Name = "Not found")]
         NotFound = 404,
+        [Display(Name = "Internal server error")]
         InternalServerError = 500
     }
 }

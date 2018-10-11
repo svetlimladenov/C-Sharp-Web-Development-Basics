@@ -7,7 +7,7 @@
     using Cookies.Contracts;
     public interface IHttpResponse
     {
-        HttpResponseStatusCode StatusCode { get; }
+        HttpResponseStatusCode StatusCode { get; set; }
 
         IHttpHeaderCollection Headers { get; }
 
