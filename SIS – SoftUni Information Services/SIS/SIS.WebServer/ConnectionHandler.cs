@@ -140,7 +140,7 @@ namespace SIS.WebServer
 
                     if (httpResponse.StatusCode == HttpResponseStatusCode.NotFound)
                     {
-                        await this.PrepareResponse(new HtmlResult("Invalid URL</br>404 Not Found",
+                        await this.PrepareResponse(new TextResult("Invalid URL</br>404 Not Found",
                             HttpResponseStatusCode.NotFound));
                         return;
                     }

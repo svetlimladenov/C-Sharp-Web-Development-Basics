@@ -14,13 +14,15 @@
     {
         public HttpResponse()
         {
-        }
-
-        public HttpResponse(HttpResponseStatusCode statusCode)
-        {
             this.Headers = new HttpHeaderCollection();
             this.Cookies = new HttpCookieCollection();
             this.Content = new byte[0];
+        }
+
+        public HttpResponse(HttpResponseStatusCode statusCode)
+            : this()
+        {
+            CoreValidator.ThrowIfNull(statusCode, nameof(statusCode));
             this.StatusCode = statusCode;
         }
 
@@ -51,16 +53,20 @@
 
         public override string ToString()
         {
-            var result = new StringBuilder();
+
+            StringBuilder result = new StringBuilder();
+
             result
-                .AppendLine($"{GlobalConstants.HttpOneProtocolFragment} {this.StatusCode.GetResponseLine()}")
-                .AppendLine($"{this.Headers}");
+                .Append($"{GlobalConstants.HttpOneProtocolFragment} {(int)this.StatusCode} {this.StatusCode.ToString()}")
+                .Append(GlobalConstants.HttpNewLine)
+                .Append(this.Headers)
+                .Append(GlobalConstants.HttpNewLine);
 
             if (this.Cookies.HasCookies())
             {
-                foreach (var cookie in this.Cookies)
+                foreach (var httpCookie in this.Cookies)
                 {
-                    result.AppendLine($"Set-Cookie: {cookie}");
+                    result.AppendLine($"Set-Cookie: {httpCookie}");
                 }
             }
 

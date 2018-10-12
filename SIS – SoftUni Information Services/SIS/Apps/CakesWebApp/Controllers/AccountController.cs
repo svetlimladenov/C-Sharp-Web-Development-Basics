@@ -11,28 +11,32 @@ using CakesWebApp.Services;
 using SIS.Http.Cookies;
 using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses.Contracts;
+using SIS.MvcFramework;
+using SIS.MvcFramework.Services;
 
 namespace CakesWebApp.Controllers
 {
     public class AccountController : BaseController
     {
-        private IHashService hashService;
+        private readonly IHashService hashService;
 
         public AccountController()
         {
             this.hashService = new HashService();
         }
 
-        public IHttpResponse Register(IHttpRequest request)
+        [HttpGet("/register")]
+        public IHttpResponse Register()
         {
             return this.View("Register");
         }
 
-        public IHttpResponse DoRegister(IHttpRequest request)
+        [HttpPost("/register")]
+        public IHttpResponse DoRegister()
         {
-            var userName = request.FormData["username"].ToString().Trim();
-            var password = request.FormData["password"].ToString();
-            var confirmPassword = request.FormData["confirmPassword"].ToString();
+            var userName = this.Request.FormData["username"].ToString().Trim();
+            var password = this.Request.FormData["password"].ToString();
+            var confirmPassword = this.Request.FormData["confirmPassword"].ToString();
 
             // Validate
             if (string.IsNullOrWhiteSpace(userName) || userName.Length < 4)
@@ -80,18 +84,20 @@ namespace CakesWebApp.Controllers
             // TODO: Login
 
             // Redirect
-            return new RedirectResult("/");
+            return this.Redirect("/");
         }
 
-        public IHttpResponse Login(IHttpRequest request)
+        [HttpGet("/login")]
+        public IHttpResponse Login()
         {
             return this.View("Login");
         }
 
-        public IHttpResponse DoLogin(IHttpRequest request)
+        [HttpPost("/login")]
+        public IHttpResponse DoLogin()
         {
-            var userName = request.FormData["username"].ToString().Trim();
-            var password = request.FormData["password"].ToString();
+            var userName = this.Request.FormData["username"].ToString().Trim();
+            var password = this.Request.FormData["password"].ToString();
 
             var hashedPassword = this.hashService.Hash(password);
 
@@ -106,24 +112,23 @@ namespace CakesWebApp.Controllers
 
             var cookieContent = this.UserCookieService.GetUserCookie(user.Username);
 
-            var response = new RedirectResult("/");
             var cookie = new HttpCookie(".auth-cakes", cookieContent, 7) { HttpOnly = true };
-            response.Cookies.Add(cookie);
-            return response;
+            this.Response.Cookies.Add(cookie);
+            return this.Redirect("/");
         }
 
-        public IHttpResponse Logout(IHttpRequest request)
+        [HttpGet("/logout")]
+        public IHttpResponse Logout()
         {
-            if (!request.Cookies.ContainsCookie(".auth-cakes"))
+            if (!this.Request.Cookies.ContainsCookie(".auth-cakes"))
             {
-                return new RedirectResult("/");
+                return this.Redirect("/");
             }
 
-            var cookie = request.Cookies.GetCookie(".auth-cakes");
+            var cookie = this.Request.Cookies.GetCookie(".auth-cakes");
             cookie.Delete();
-            var response = new RedirectResult("/");
-            response.Cookies.Add(cookie);
-            return response;
+            this.Response.Cookies.Add(cookie);
+            return this.Redirect("/");
         }
     }
 }

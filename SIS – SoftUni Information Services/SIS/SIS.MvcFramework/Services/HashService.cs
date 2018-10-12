@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CakesWebApp.Services
+namespace SIS.MvcFramework.Services
 {
     public class HashService : IHashService
     {
@@ -16,7 +16,7 @@ namespace CakesWebApp.Services
 
             return result;
         }
-                 
+
         public string Hash(string stringToHash)
         {
             stringToHash = stringToHash + "myAppSalt12312341234#";
@@ -32,5 +32,7 @@ namespace CakesWebApp.Services
                 return hash;
             }
         }
+
+
     }
 }

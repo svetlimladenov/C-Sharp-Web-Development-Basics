@@ -6,9 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SIS.Http\SIS.Http.csproj" />
-    <ProjectReference Include="..\..\SIS.WebServer\SIS.WebServer.csproj" />
-    <ProjectReference Include="..\CakesWebApp\CakesWebApp.csproj" />
+    <ProjectReference Include="..\..\SIS.MvcFramework\SIS.MvcFramework.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -138,6 +136,10 @@
     <None Update="Views\_Layout_LoggedOut.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

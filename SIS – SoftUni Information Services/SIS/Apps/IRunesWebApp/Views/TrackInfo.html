@@ -1,14 +1,14 @@
 ﻿<div class="container-fluid text-center">
     <div>
-        <h5>Track Name: {name}</h5>
+        <h5>Track Name: @Model.Name</h5>
     </div>
     <div>
-        <h5>Track Price: $ {price}</h5>
+        <h5>Track Price: $ @Model.Price</h5>
     </div>
     <hr style="height: 2px;" class="bg-success" />
-    <div class="video-container">
-        <iframe width="1280" height="720" src="{trackUrl}" frameborder="1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <div <!--class="video-container"-->>
+        <iframe width="1280" height="720" src="@Model.TrackUrl" frameborder="1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
     <hr style="height: 2px;" class="bg-success" />
-    <a href="/Albums/Details?id={albumid}" class="btn btn-success btn-sm col-md-2">Back To Album</a> 
+    <a href="/Albums/Details?id=@Model.AlbumId" class="btn btn-success btn-sm col-md-2">Back To Album</a> 
 </div>
