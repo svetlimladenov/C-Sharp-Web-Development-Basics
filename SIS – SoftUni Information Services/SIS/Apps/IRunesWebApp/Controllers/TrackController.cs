@@ -71,8 +71,7 @@ namespace IRunesWebApp.Controller
 
             var trackAlbum = new TrackAlbum()
             {
-                AlbumId = this.Db.Albums.Find(albumId).Id,
-
+                AlbumId = this.Db.Albums.FirstOrDefault(a => a.Id == albumId)?.Id,
                 TrackId = trackId
             };
 

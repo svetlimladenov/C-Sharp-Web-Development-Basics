@@ -74,14 +74,21 @@ namespace IRunesWebApp.Controller
             }
 
             var albumExists = this.Db.Albums.Any(x => x.Name == album.Name);
+            var albumId = "";
             if (!albumExists)
             {
                 this.Db.Albums.Add(album);
+                albumId = this.Db.Albums.Local.FirstOrDefault(x => x.Name == albumName)?.Id;
+            }
+            else
+            {
+                albumId = this.Db.Albums.FirstOrDefault(x => x.Name == albumName)?.Id;
+
             }
 
 
 
-            var albumId = this.Db.Albums.Local.FirstOrDefault(x => x.Name == albumName)?.Id;
+
             var username = this.User;
             var userId = this.Db.Users.FirstOrDefault(x => x.Username == username)?.Id;
             var userAlbum = new UserAlbum()
