@@ -21,24 +21,25 @@ namespace SIS.MvcFramework
 
         public IHttpResponse Response { get; set; }
 
+        public IUserCookieService UserCookieService { get; internal set; }
+
         protected string User
         {
             get
             {
-                if (!this.Request.Cookies.ContainsCookie(".auth-IRunes"))
+                if (!this.Request.Cookies.ContainsCookie(".auth-cakes"))
                 {
                     return null;
                 }
-                //".auth-IRunes"
+                //.auth-IRunes
                 //.auth-cakes
-                var cookie = this.Request.Cookies.GetCookie(".auth-IRunes");
+                var cookie = this.Request.Cookies.GetCookie(".auth-cakes");
                 var cookieContent = cookie.Value;
                 var userName = this.UserCookieService.GetUserData(cookieContent);
                 return userName;
             }
         }
 
-        protected IUserCookieService UserCookieService { get; }
 
         protected IHttpResponse View(string viewName, IDictionary<string, string> viewBag = null)
         {

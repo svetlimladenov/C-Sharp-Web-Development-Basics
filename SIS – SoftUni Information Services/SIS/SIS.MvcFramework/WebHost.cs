@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using CakesWebApp.Services;
 using SIS.Http.Enums;
 using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses.Contracts;
+using SIS.MvcFramework.Services;
 using SIS.WebServer;
 using SIS.WebServer.Results;
 using SIS.WebServer.Routing;
@@ -14,10 +16,11 @@ namespace SIS.MvcFramework
     {
         public static void Start(IMvcApplication application)
         {
-            application.ConfigureServices();
+            var dependencyContainer = new ServiceCollection();
+            application.ConfigureServices(dependencyContainer);
 
             var serverRoutingTable = new ServerRoutingTable(); 
-            AutoRegisterRoutes(serverRoutingTable,application);
+            AutoRegisterRoutes(serverRoutingTable,application,dependencyContainer);
                   
             application.Configure();
 
@@ -25,7 +28,7 @@ namespace SIS.MvcFramework
             server.Run();
         }
 
-        private static void AutoRegisterRoutes(ServerRoutingTable routingTable, IMvcApplication application)
+        private static void AutoRegisterRoutes(ServerRoutingTable routingTable, IMvcApplication application, IServiceCollection serviceCollection)
         {
             var controllers = application.GetType().Assembly.GetTypes()
                 .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(Controller)));
@@ -44,7 +47,7 @@ namespace SIS.MvcFramework
                         continue;
                     }
                     routingTable.Add(httpAttribute.Method,httpAttribute.Path, 
-                        (request) => ExecuteAction(controller, methodInfo, request));
+                        (request) => ExecuteAction(controller, methodInfo, request,serviceCollection));
 
                     Console.WriteLine($"Route registered : {controller.Name}.{methodInfo.Name} => {httpAttribute.Method} => {httpAttribute.Path}");
                 }
@@ -52,15 +55,16 @@ namespace SIS.MvcFramework
             }
         }
 
-        private static IHttpResponse ExecuteAction(Type controllerType, MethodInfo methodInfo, IHttpRequest request)
+        private static IHttpResponse ExecuteAction(Type controllerType, MethodInfo methodInfo, IHttpRequest request, IServiceCollection serviceCollection)
         {
-            var controllerInstance = Activator.CreateInstance(controllerType) as Controller;
+            var controllerInstance = serviceCollection.CreateInstance(controllerType) as Controller;
             if (controllerInstance == null)
             {
                 return new TextResult("Controller not found",HttpResponseStatusCode.InternalServerError);
             }
 
             controllerInstance.Request = request;
+            controllerInstance.UserCookieService = serviceCollection.CreateInstance<IUserCookieService>();
 
             var httpResponse =  methodInfo.Invoke(controllerInstance, new object[] { }) as IHttpResponse;
             //1. Create instance of controllerName

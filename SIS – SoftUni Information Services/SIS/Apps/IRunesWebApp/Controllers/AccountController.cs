@@ -15,9 +15,9 @@ namespace IRunesWebApp.Controller
     {
         private readonly IHashService hashService;
 
-        public AccountController()
+        public AccountController(IHashService hashService)
         {
-            this.hashService = new HashService();
+            this.hashService = hashService;
         }
 
         [HttpGet("/Users/Login")]

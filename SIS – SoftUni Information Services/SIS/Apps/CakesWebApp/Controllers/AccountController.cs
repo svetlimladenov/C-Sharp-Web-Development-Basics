@@ -16,13 +16,14 @@ using SIS.MvcFramework.Services;
 
 namespace CakesWebApp.Controllers
 {
+
     public class AccountController : BaseController
     {
         private readonly IHashService hashService;
 
-        public AccountController()
+        public AccountController(IHashService hashService)
         {
-            this.hashService = new HashService();
+            this.hashService = hashService;
         }
 
         [HttpGet("/register")]

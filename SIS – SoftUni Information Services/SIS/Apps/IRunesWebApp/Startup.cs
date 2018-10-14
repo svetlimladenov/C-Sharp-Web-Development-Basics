@@ -4,6 +4,7 @@ using System.Text;
 using IRunesWebApp.Controller;
 using SIS.Http.Enums;
 using SIS.MvcFramework;
+using SIS.MvcFramework.Services;
 using SIS.WebServer.Routing;
 
 namespace IRunesWebApp
@@ -15,9 +16,9 @@ namespace IRunesWebApp
 
         }
 
-        public void ConfigureServices()
+        public void ConfigureServices(IServiceCollection collection)
         {
-            // TODO: Implement IoC/DI container
+            throw new NotImplementedException();
         }
     }
 }
