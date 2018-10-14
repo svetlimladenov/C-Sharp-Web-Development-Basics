@@ -16,10 +16,6 @@ namespace CakesWebApp.Services
             this.logger = logger;
         }
 
-        public UserCookieService()
-        {
-        }
-
         public const string EncryptKey = "E646C8DF278CD5931069B522E695D4F2";
 
         public string GetUserCookie(string userName)

@@ -13,7 +13,6 @@ namespace SIS.MvcFramework
     {
         protected Controller()
         {
-            this.UserCookieService = new UserCookieService();
             this.Response = new HttpResponse { StatusCode = HttpResponseStatusCode.OK };
         }
 

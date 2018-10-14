@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CakesWebApp.Services;
@@ -66,11 +67,41 @@ namespace SIS.MvcFramework
             controllerInstance.Request = request;
             controllerInstance.UserCookieService = serviceCollection.CreateInstance<IUserCookieService>();
 
-            var httpResponse =  methodInfo.Invoke(controllerInstance, new object[] { }) as IHttpResponse;
-            //1. Create instance of controllerName
-            //2. Set request
-            //3. Invoke actionName
-            //4. Return action result
+            var actionParameters = methodInfo.GetParameters();
+            var actionParameterObjects = new List<object>();
+            foreach (var actionParameter in actionParameters)
+            {
+                var instance = serviceCollection.CreateInstance(actionParameter.ParameterType);
+
+                var properties = actionParameter.ParameterType.GetProperties();
+                foreach (var propertyInfo in properties)
+                {
+                    //TODO: Support IEnumerable
+
+                    var key = propertyInfo.Name.ToLower();
+                    object value = null;
+                    if (request.FormData.Any(x => x.Key.ToLower() == key))
+                    {
+                        value = request.FormData.First(x => x.Key.ToLower() == key).Value.ToString();
+                    }
+                    else if(request.QueryData.Any(x => x.Key.ToLower() == key))
+                    {
+                        value = request.QueryData.FirstOrDefault(x => x.Key.ToLower() == key).Value.ToString();
+                    }
+
+                    propertyInfo.SetMethod.Invoke(instance, new object[]
+                    {
+                        value
+                    });
+
+
+                }
+
+                actionParameterObjects.Add(instance);
+            }
+
+            var httpResponse =  methodInfo.Invoke(controllerInstance, actionParameterObjects.ToArray()) as IHttpResponse;
+
             return httpResponse;
         } 
     }

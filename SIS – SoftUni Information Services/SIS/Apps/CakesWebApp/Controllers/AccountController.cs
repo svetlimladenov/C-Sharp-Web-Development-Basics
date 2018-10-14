@@ -8,6 +8,7 @@ using SIS.WebServer.Results;
 using System.Linq;
 using CakesWebApp.Models;
 using CakesWebApp.Services;
+using CakesWebApp.ViewModels.Account;
 using SIS.Http.Cookies;
 using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses.Contracts;
@@ -33,19 +34,19 @@ namespace CakesWebApp.Controllers
         }
 
         [HttpPost("/register")]
-        public IHttpResponse DoRegister()
+        public IHttpResponse DoRegister(DoRegisterInputModel model)
         {
-            var userName = this.Request.FormData["username"].ToString().Trim();
-            var password = this.Request.FormData["password"].ToString();
-            var confirmPassword = this.Request.FormData["confirmPassword"].ToString();
+            var username = model.Username.Trim();
+            var password = model.Password;
+            var confirmPassword = model.ConfirmPassword;
 
             // Validate
-            if (string.IsNullOrWhiteSpace(userName) || userName.Length < 4)
+            if (string.IsNullOrWhiteSpace(username) || username.Length < 4)
             {
                 return this.BadRequestError("Please provide valid username with length of 4 or more characters.");
             }
 
-            if (this.Db.Users.Any(x => x.Username == userName))
+            if (this.Db.Users.Any(x => x.Username == username))
             {
                 return this.BadRequestError("User with the same name already exists.");
             }
@@ -66,8 +67,8 @@ namespace CakesWebApp.Controllers
             // Create user
             var user = new User
             {
-                Name = userName,
-                Username = userName,
+                Name = username,
+                Username = username,
                 Password = hashedPassword,
             };
             this.Db.Users.Add(user);
