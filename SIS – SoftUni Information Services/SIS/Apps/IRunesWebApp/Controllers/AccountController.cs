@@ -2,6 +2,7 @@
 using System.Linq;
 using IRunesWebApp.GlobalConst;
 using IRunesWebApp.Models;
+using IRunesWebApp.ViewModels.Account;
 using SIS.Http.Cookies;
 using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses.Contracts;
@@ -31,14 +32,12 @@ namespace IRunesWebApp.Controller
         }
 
         [HttpPost("/Users/Login")]
-        public IHttpResponse DoLogin()
+        public IHttpResponse DoLogin(DoLoginInputModel model)
         {
-            var username = this.Request.FormData["username"].ToString().Trim();
-            var password = this.Request.FormData["password"].ToString();
 
-            var hashedPassword = this.hashService.Hash(password);
+            var hashedPassword = this.hashService.Hash(model.Password);
 
-            var user = this.Db.Users.FirstOrDefault(x => x.Username == username);
+            var user = this.Db.Users.FirstOrDefault(x => x.Username == model.Username);
             if (user == null)
             {
                 return this.BadRequestError("Invalid username or password.");
@@ -81,12 +80,12 @@ namespace IRunesWebApp.Controller
         }
 
         [HttpPost("/Users/Register")]
-        public IHttpResponse DoRegister()
+        public IHttpResponse DoRegister(DoRegisterInputModel model)
         {
-            var username = this.Request.FormData["username"].ToString().Trim();
-            var password = this.Request.FormData["password"].ToString();
-            var confirmPassword = this.Request.FormData["confirmpassword"].ToString();
-            var email = this.Request.FormData["email"].ToString().Trim();
+            var username = model.Username.Trim();
+            var password = model.Password;
+            var confirmPassword = model.ConfirmPassword;
+            var email = model.Email.Trim();
 
             if (username.Length < 3)
             {
