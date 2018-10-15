@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using CakesWebApp.Services;
 using SIS.Http.Enums;
 using SIS.Http.Requests.Contracts;
@@ -17,12 +19,14 @@ namespace SIS.MvcFramework
     {
         public static void Start(IMvcApplication application)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
             var dependencyContainer = new ServiceCollection();
             application.ConfigureServices(dependencyContainer);
 
-            var serverRoutingTable = new ServerRoutingTable(); 
-            AutoRegisterRoutes(serverRoutingTable,application,dependencyContainer);
-                  
+            var serverRoutingTable = new ServerRoutingTable();
+            AutoRegisterRoutes(serverRoutingTable, application, dependencyContainer);
+
             application.Configure();
 
             var server = new Server(80, serverRoutingTable);
@@ -47,12 +51,12 @@ namespace SIS.MvcFramework
                     {
                         continue;
                     }
-                    routingTable.Add(httpAttribute.Method,httpAttribute.Path, 
-                        (request) => ExecuteAction(controller, methodInfo, request,serviceCollection));
+                    routingTable.Add(httpAttribute.Method, httpAttribute.Path,
+                        (request) => ExecuteAction(controller, methodInfo, request, serviceCollection));
 
                     Console.WriteLine($"Route registered : {controller.Name}.{methodInfo.Name} => {httpAttribute.Method} => {httpAttribute.Path}");
                 }
-                
+
             }
         }
 
@@ -61,7 +65,7 @@ namespace SIS.MvcFramework
             var controllerInstance = serviceCollection.CreateInstance(controllerType) as Controller;
             if (controllerInstance == null)
             {
-                return new TextResult("Controller not found",HttpResponseStatusCode.InternalServerError);
+                return new TextResult("Controller not found", HttpResponseStatusCode.InternalServerError);
             }
 
             controllerInstance.Request = request;
@@ -79,17 +83,45 @@ namespace SIS.MvcFramework
                     //TODO: Support IEnumerable
 
                     var key = propertyInfo.Name.ToLower();
-                    object value = null;
+                    string stringValue = null;
                     if (request.FormData.Any(x => x.Key.ToLower() == key))
                     {
-                        value = request.FormData.First(x => x.Key.ToLower() == key).Value.ToString().UrlDecode();
+                        stringValue = request.FormData.First(x => x.Key.ToLower() == key).Value.ToString().UrlDecode();
                     }
-                    else if(request.QueryData.Any(x => x.Key.ToLower() == key))
+                    else if (request.QueryData.Any(x => x.Key.ToLower() == key))
                     {
-                        value = request.QueryData.FirstOrDefault(x => x.Key.ToLower() == key).Value.ToString().UrlDecode();
+                        stringValue = request.QueryData.FirstOrDefault(x => x.Key.ToLower() == key).Value.ToString().UrlDecode();
                     }
 
-                   
+                    //check type of propertyInfo
+                    // -> decimal -> decimal.TryParse()
+                    // -> int, char, long, double, datetime
+
+                    var typeCode = Type.GetTypeCode(propertyInfo.PropertyType);
+                    object value = stringValue;
+                    switch (typeCode)
+                    {
+                        case TypeCode.Int32:
+                            if (int.TryParse(stringValue,out var intValue)) value = intValue; 
+                            break;
+                        case TypeCode.Char:
+                            if (char.TryParse(stringValue, out var charValue)) value = charValue;
+                            break;
+                        case TypeCode.Int64:
+                            if (long.TryParse(stringValue, out var longValue)) value = longValue;
+                            break;
+                        case TypeCode.Double:
+                            if (double.TryParse(stringValue, out var doubleValue)) value = doubleValue;
+                            break;
+                        case TypeCode.Decimal:
+                            if (decimal.TryParse(stringValue, out var decimalValue)) value = decimalValue;
+                            break;
+                        case TypeCode.DateTime:
+                            if (DateTime.TryParse(stringValue, out var dateTimeValue)) value = dateTimeValue;
+                            break;
+                    }
+                    
+
                     propertyInfo.SetMethod.Invoke(instance, new object[]
                     {
                         value
@@ -101,9 +133,9 @@ namespace SIS.MvcFramework
                 actionParameterObjects.Add(instance);
             }
 
-            var httpResponse =  methodInfo.Invoke(controllerInstance, actionParameterObjects.ToArray()) as IHttpResponse;
+            var httpResponse = methodInfo.Invoke(controllerInstance, actionParameterObjects.ToArray()) as IHttpResponse;
 
             return httpResponse;
-        } 
+        }
     }
 }

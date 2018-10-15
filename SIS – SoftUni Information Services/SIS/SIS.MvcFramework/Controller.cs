@@ -26,13 +26,13 @@ namespace SIS.MvcFramework
         {
             get
             {
-                if (!this.Request.Cookies.ContainsCookie(".auth-IRunes"))
+                if (!this.Request.Cookies.ContainsCookie(".auth-cakes"))
                 {
                     return null;
                 }
                 //.auth-IRunes
                 //.auth-cakes
-                var cookie = this.Request.Cookies.GetCookie(".auth-IRunes");
+                var cookie = this.Request.Cookies.GetCookie(".auth-cakes");
                 var cookieContent = cookie.Value;
                 var userName = this.UserCookieService.GetUserData(cookieContent);
                 return userName;
