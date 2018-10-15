@@ -19,7 +19,7 @@ namespace SIS.MvcFramework
     {
         public static void Start(IMvcApplication application)
         {
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
             var dependencyContainer = new ServiceCollection();
             application.ConfigureServices(dependencyContainer);
