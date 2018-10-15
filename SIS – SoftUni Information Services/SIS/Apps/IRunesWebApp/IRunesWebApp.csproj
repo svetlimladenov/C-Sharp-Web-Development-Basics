@@ -106,7 +106,7 @@
     <None Update="Views\AllAlbums.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Views\BadRequest.html">
+    <None Update="Views\Error.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Views\CreateAlbum.html">
