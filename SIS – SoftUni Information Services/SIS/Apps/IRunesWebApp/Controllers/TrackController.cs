@@ -96,7 +96,7 @@ namespace IRunesWebApp.Controller
             var trackId = model.TrackId;
             var track = this.Db.Tracks.FirstOrDefault(x => x.Id == trackId);
 
-            if (track != null)
+            if (track != null && this.Db.Albums.Any(a => a.Id == albumId))
             {
                 var youtubeLink = WebUtility.UrlDecode(track.Link);
                 var trackName = track.Name;
@@ -113,7 +113,7 @@ namespace IRunesWebApp.Controller
                 return this.View("TrackInfo", viewBag);
             }
 
-            return BadRequestError("Track unavaivable");
+            return BadRequestError("Track or Album unavaivable");
 
         }
     }

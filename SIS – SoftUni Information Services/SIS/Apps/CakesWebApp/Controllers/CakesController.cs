@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using CakesWebApp.Extensions;
 using CakesWebApp.Models;
 using CakesWebApp.ViewModels.Cakes;
 using SIS.Http.Requests;
@@ -10,12 +9,19 @@ using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses;
 using SIS.Http.Responses.Contracts;
 using SIS.MvcFramework;
+using SIS.MvcFramework.Logger;
 using SIS.WebServer.Results;
 
 namespace CakesWebApp.Controllers
 {
     public class CakesController : BaseController
     {
+        private readonly ILogger logger;
+
+        public CakesController(ILogger logger)
+        {
+            this.logger = logger;
+        }
         [HttpGet("/cakes/add")]
         public IHttpResponse AddCakes()
         {
@@ -23,14 +29,14 @@ namespace CakesWebApp.Controllers
         }
 
         [HttpPost("/cakes/add")]
-        public IHttpResponse DoAddCakes(DoAddCakesModel model)
+        public IHttpResponse DoAddCakes(DoAddCakesModel model,decimal price)
         {
             // TODO: Validation
-
+            this.logger.Log(price.ToString());
             var product = new Product
             {
                 Name = model.Name,
-                Price = model.Price.ToDecimal(),
+                Price = model.Price,
                 ImageUrl = model.Picture
             };
             this.Db.Products.Add(product);

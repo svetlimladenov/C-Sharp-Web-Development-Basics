@@ -115,6 +115,10 @@ namespace IRunesWebApp.Controller
             //var id = this.Request.QueryData["id"].ToString();
             var id = model.Id;
             var album = this.Db.Albums.FirstOrDefault(x => x.Id == id);
+            if (album == null)
+            {
+                return BadRequestError("Invalid Album.");
+            }
             var albumId = album.Id;
             var query = from track in this.Db.Tracks
                         where track.TrackAlbums.Any(x => x.AlbumId == albumId)
