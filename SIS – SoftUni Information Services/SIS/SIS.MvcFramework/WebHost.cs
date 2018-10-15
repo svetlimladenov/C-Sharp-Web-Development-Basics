@@ -71,71 +71,97 @@ namespace SIS.MvcFramework
             controllerInstance.Request = request;
             controllerInstance.UserCookieService = serviceCollection.CreateInstance<IUserCookieService>();
 
-            var actionParameters = methodInfo.GetParameters();
-            var actionParameterObjects = new List<object>();
-            foreach (var actionParameter in actionParameters)
-            {
-                var instance = serviceCollection.CreateInstance(actionParameter.ParameterType);
-
-                var properties = actionParameter.ParameterType.GetProperties();
-                foreach (var propertyInfo in properties)
-                {
-                    //TODO: Support IEnumerable
-
-                    var key = propertyInfo.Name.ToLower();
-                    string stringValue = null;
-                    if (request.FormData.Any(x => x.Key.ToLower() == key))
-                    {
-                        stringValue = request.FormData.First(x => x.Key.ToLower() == key).Value.ToString().UrlDecode();
-                    }
-                    else if (request.QueryData.Any(x => x.Key.ToLower() == key))
-                    {
-                        stringValue = request.QueryData.FirstOrDefault(x => x.Key.ToLower() == key).Value.ToString().UrlDecode();
-                    }
-
-                    //check type of propertyInfo
-                    // -> decimal -> decimal.TryParse()
-                    // -> int, char, long, double, datetime
-
-                    var typeCode = Type.GetTypeCode(propertyInfo.PropertyType);
-                    object value = stringValue;
-                    switch (typeCode)
-                    {
-                        case TypeCode.Int32:
-                            if (int.TryParse(stringValue,out var intValue)) value = intValue; 
-                            break;
-                        case TypeCode.Char:
-                            if (char.TryParse(stringValue, out var charValue)) value = charValue;
-                            break;
-                        case TypeCode.Int64:
-                            if (long.TryParse(stringValue, out var longValue)) value = longValue;
-                            break;
-                        case TypeCode.Double:
-                            if (double.TryParse(stringValue, out var doubleValue)) value = doubleValue;
-                            break;
-                        case TypeCode.Decimal:
-                            if (decimal.TryParse(stringValue, out var decimalValue)) value = decimalValue;
-                            break;
-                        case TypeCode.DateTime:
-                            if (DateTime.TryParse(stringValue, out var dateTimeValue)) value = dateTimeValue;
-                            break;
-                    }
-                    
-
-                    propertyInfo.SetMethod.Invoke(instance, new object[]
-                    {
-                        value
-                    });
-
-
-                }
-
-                actionParameterObjects.Add(instance);
-            }
+            var actionParameterObjects = GetActionParameterObjects(methodInfo, request, serviceCollection);
 
             var httpResponse = methodInfo.Invoke(controllerInstance, actionParameterObjects.ToArray()) as IHttpResponse;
 
             return httpResponse;
+        }
+
+        private static List<object> GetActionParameterObjects(MethodInfo methodInfo, IHttpRequest request,
+            IServiceCollection serviceCollection)
+        {
+            var actionParameters = methodInfo.GetParameters();
+            var actionParameterObjects = new List<object>();
+            foreach (var actionParameter in actionParameters)
+            {
+                //TODO : Improce this check
+                if (actionParameter.ParameterType.IsValueType || Type.GetTypeCode(actionParameter.ParameterType) == TypeCode.String)
+                {
+                    var stringValue = GetRequestData(request, actionParameter.Name);
+                    actionParameterObjects.Add(TryParse(stringValue, actionParameter.ParameterType));
+                }
+                else
+                {
+
+                    var instance = serviceCollection.CreateInstance(actionParameter.ParameterType);
+                    var properties = actionParameter.ParameterType.GetProperties();
+                    foreach (var propertyInfo in properties)
+                    {
+                        //TODO: Support IEnumerable
+                        var key = propertyInfo.Name;
+                        var stringValue = GetRequestData(request, key);
+                        var value = TryParse(stringValue, propertyInfo.PropertyType);
+
+
+                        propertyInfo.SetMethod.Invoke(instance, new object[] { value });
+                    }
+
+                    actionParameterObjects.Add(instance);
+                }
+
+            }
+
+            return actionParameterObjects;
+        }
+
+        private static string GetRequestData(IHttpRequest request, string key)
+        {
+            key = key.ToLower();
+            string stringValue = null;
+            if (request.FormData.Any(x => x.Key.ToLower() == key))
+            {
+                stringValue = request.FormData.First(x => x.Key.ToLower() == key).Value.ToString().UrlDecode();
+            }
+            else if (request.QueryData.Any(x => x.Key.ToLower() == key))
+            {
+                stringValue = request.QueryData.FirstOrDefault(x => x.Key.ToLower() == key).Value.ToString()
+                    .UrlDecode();
+            }
+
+            return stringValue;
+        }
+
+        private static object TryParse(string stringValue, Type type)
+        {
+            var typeCode = Type.GetTypeCode(type);
+            object value = null;
+            switch (typeCode)
+            {
+                case TypeCode.Int32:
+                    if (int.TryParse(stringValue, out var intValue)) value = intValue;
+                    break;
+                case TypeCode.Char:
+                    if (char.TryParse(stringValue, out var charValue)) value = charValue;
+                    break;
+                case TypeCode.Int64:
+                    if (long.TryParse(stringValue, out var longValue)) value = longValue;
+                    break;
+                case TypeCode.Double:
+                    if (double.TryParse(stringValue, out var doubleValue)) value = doubleValue;
+                    break;
+                case TypeCode.Decimal:
+                    if (decimal.TryParse(stringValue, out var decimalValue)) value = decimalValue;
+                    break;
+                case TypeCode.DateTime:
+                    if (DateTime.TryParse(stringValue, out var dateTimeValue)) value = dateTimeValue;
+                    break;
+                case TypeCode.String:
+                    value = stringValue;
+                    break;
+            }
+
+            return value;
         }
     }
 }
