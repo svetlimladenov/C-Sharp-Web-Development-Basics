@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using IRunesWebApp.GlobalConst;
 using IRunesWebApp.Models;
+using IRunesWebApp.ViewModels.Albums;
 using Microsoft.EntityFrameworkCore;
 using SIS.Http.Enums;
 using SIS.Http.Requests.Contracts;
@@ -57,18 +58,17 @@ namespace IRunesWebApp.Controller
         }
 
         [HttpPost("/Albums/Create")]
-        public IHttpResponse AddNewAlbum()
+        public IHttpResponse AddNewAlbum(AddNewAlbumInputModel model)
         {
-            var albumName = this.Request.FormData["albumName"].ToString().Trim();
-            var coverUrl = WebUtility.UrlDecode(this.Request.FormData["coverUrl"].ToString().Trim());
+
 
             var album = new Album()
             {
-                Name = albumName,
-                Cover = coverUrl
+                Name = model.AlbumName,
+                Cover = model.CoverUrl
             };
 
-            if (string.IsNullOrWhiteSpace(albumName) || string.IsNullOrWhiteSpace(albumName))
+            if (string.IsNullOrWhiteSpace(model.AlbumName) || string.IsNullOrWhiteSpace(model.AlbumName))
             {
                 return this.BadRequestError("Fill in all the blanks.");
             }
@@ -78,12 +78,11 @@ namespace IRunesWebApp.Controller
             if (!albumExists)
             {
                 this.Db.Albums.Add(album);
-                albumId = this.Db.Albums.Local.FirstOrDefault(x => x.Name == albumName)?.Id;
+                albumId = this.Db.Albums.Local.FirstOrDefault(x => x.Name == model.AlbumName)?.Id;
             }
             else
             {
-                albumId = this.Db.Albums.FirstOrDefault(x => x.Name == albumName)?.Id;
-
+                albumId = this.Db.Albums.FirstOrDefault(x => x.Name == model.AlbumName)?.Id;
             }
 
 
@@ -111,9 +110,10 @@ namespace IRunesWebApp.Controller
         }
 
         [HttpGet("/Albums/Details")]
-        public IHttpResponse AlbumDetails()
+        public IHttpResponse AlbumDetails(AlbumsDetailsViewModel model)
         {
-            var id = this.Request.QueryData["id"].ToString();
+            //var id = this.Request.QueryData["id"].ToString();
+            var id = model.Id;
             var album = this.Db.Albums.FirstOrDefault(x => x.Id == id);
             var albumId = album.Id;
             var query = from track in this.Db.Tracks

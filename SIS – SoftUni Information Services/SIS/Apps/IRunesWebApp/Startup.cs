@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CakesWebApp.Services;
 using IRunesWebApp.Controller;
 using SIS.Http.Enums;
 using SIS.MvcFramework;
+using SIS.MvcFramework.Logger;
+using SIS.MvcFramework.Services;
 using SIS.WebServer.Routing;
 
 namespace IRunesWebApp
@@ -15,9 +18,11 @@ namespace IRunesWebApp
 
         }
 
-        public void ConfigureServices()
+        public void ConfigureServices(IServiceCollection collection)
         {
-            // TODO: Implement IoC/DI container
+            collection.AddService<IHashService, HashService>();
+            collection.AddService<IUserCookieService, UserCookieService>();
+            collection.AddService<ILogger, FileLogger>();
         }
     }
 }

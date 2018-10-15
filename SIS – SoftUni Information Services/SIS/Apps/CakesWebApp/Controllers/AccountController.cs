@@ -8,6 +8,7 @@ using SIS.WebServer.Results;
 using System.Linq;
 using CakesWebApp.Models;
 using CakesWebApp.Services;
+using CakesWebApp.ViewModels.Account;
 using SIS.Http.Cookies;
 using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses.Contracts;
@@ -16,13 +17,14 @@ using SIS.MvcFramework.Services;
 
 namespace CakesWebApp.Controllers
 {
+
     public class AccountController : BaseController
     {
         private readonly IHashService hashService;
 
-        public AccountController()
+        public AccountController(IHashService hashService)
         {
-            this.hashService = new HashService();
+            this.hashService = hashService;
         }
 
         [HttpGet("/register")]
@@ -32,19 +34,19 @@ namespace CakesWebApp.Controllers
         }
 
         [HttpPost("/register")]
-        public IHttpResponse DoRegister()
+        public IHttpResponse DoRegister(DoRegisterInputModel model)
         {
-            var userName = this.Request.FormData["username"].ToString().Trim();
-            var password = this.Request.FormData["password"].ToString();
-            var confirmPassword = this.Request.FormData["confirmPassword"].ToString();
+            var username = model.Username.Trim();
+            var password = model.Password;
+            var confirmPassword = model.ConfirmPassword;
 
             // Validate
-            if (string.IsNullOrWhiteSpace(userName) || userName.Length < 4)
+            if (string.IsNullOrWhiteSpace(username) || username.Length < 4)
             {
                 return this.BadRequestError("Please provide valid username with length of 4 or more characters.");
             }
 
-            if (this.Db.Users.Any(x => x.Username == userName))
+            if (this.Db.Users.Any(x => x.Username == username))
             {
                 return this.BadRequestError("User with the same name already exists.");
             }
@@ -65,8 +67,8 @@ namespace CakesWebApp.Controllers
             // Create user
             var user = new User
             {
-                Name = userName,
-                Username = userName,
+                Name = username,
+                Username = username,
                 Password = hashedPassword,
             };
             this.Db.Users.Add(user);
@@ -94,15 +96,12 @@ namespace CakesWebApp.Controllers
         }
 
         [HttpPost("/login")]
-        public IHttpResponse DoLogin()
+        public IHttpResponse DoLogin(DoLoginInputModel model)
         {
-            var userName = this.Request.FormData["username"].ToString().Trim();
-            var password = this.Request.FormData["password"].ToString();
-
-            var hashedPassword = this.hashService.Hash(password);
+            var hashedPassword = this.hashService.Hash(model.Password);
 
             var user = this.Db.Users.FirstOrDefault(x => 
-                x.Username == userName &&
+                x.Username == model.Username.Trim() &&
                 x.Password == hashedPassword);
 
             if (user == null)

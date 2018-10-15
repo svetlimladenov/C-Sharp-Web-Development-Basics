@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using IRunesWebApp.Models;
+using IRunesWebApp.ViewModels.Tracks;
 using SIS.Http.Enums;
 using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses.Contracts;
@@ -16,9 +17,10 @@ namespace IRunesWebApp.Controller
     public class TrackController : BaseController
     {
         [HttpGet("/Albums/Tracks/Create")]
-        public IHttpResponse CreateTrack()
+        public IHttpResponse CreateTrack(CreateTrackViewModel model)
         {
-            var albumId = this.Request.QueryData["albumId"].ToString();
+            //var albumId = this.Request.QueryData["albumId"].ToString();
+            var albumId = model.AlbumId;
 
             var viewBag = new Dictionary<string, string>
             {
@@ -29,13 +31,13 @@ namespace IRunesWebApp.Controller
         }
 
         [HttpPost("/Albums/Tracks/Create")]
-        public IHttpResponse AddTrack()
+        public IHttpResponse AddTrack(AddTrackInputModel model)
         {
-            var trackName = this.Request.FormData["trackName"].ToString().Trim();
-            var trackLink = this.Request.FormData["trackLink"].ToString().Trim();
+            var trackName = model.TrackName;
+            var trackLink = model.TrackLink.Trim();
 
-            var trackPriceString = this.Request.FormData["trackPrice"].ToString().Trim();
-            var albumId = this.Request.QueryData["albumId"].ToString();
+            var trackPriceString = model.TrackPrice;
+            var albumId = model.AlbumId;
 
             if (string.IsNullOrWhiteSpace(trackName) || string.IsNullOrWhiteSpace(trackLink) || string.IsNullOrWhiteSpace(trackPriceString))
             {
@@ -88,12 +90,10 @@ namespace IRunesWebApp.Controller
         }
 
         [HttpGet("/Albums/Tracks/Details")]
-        public IHttpResponse TrackInfo()
+        public IHttpResponse TrackInfo(TrackInfoViewModel model)
         {
-            var response = this.View("TrackInfo");
-            var view = Encoding.UTF8.GetString(response.Content);
-            var albumId = this.Request.QueryData["albumId"].ToString();
-            var trackId = this.Request.QueryData["trackId"].ToString();
+            var albumId = model.AlbumId;
+            var trackId = model.TrackId;
             var track = this.Db.Tracks.FirstOrDefault(x => x.Id == trackId);
 
             if (track != null)
