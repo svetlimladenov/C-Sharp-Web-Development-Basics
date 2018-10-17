@@ -101,6 +101,7 @@ namespace SIS.MvcFramework
                         //TODO: Support IEnumerable
                         var key = propertyInfo.Name;
                         var stringValue = GetRequestData(request, key);
+                        // Convert.ChangeTyte()
                         var value = TryParse(stringValue, propertyInfo.PropertyType);
 
 
