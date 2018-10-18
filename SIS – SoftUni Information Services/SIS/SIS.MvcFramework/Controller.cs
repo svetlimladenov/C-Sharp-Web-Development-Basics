@@ -6,6 +6,7 @@ using SIS.Http.Headers;
 using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses;
 using SIS.Http.Responses.Contracts;
+using SIS.MvcFramework.ViewEngine;
 
 namespace SIS.MvcFramework
 {
@@ -19,6 +20,8 @@ namespace SIS.MvcFramework
         public IHttpRequest Request { get; set; }
 
         public IHttpResponse Response { get; set; }
+
+        public IViewEngine ViewEngine { get; set; }
 
         public IUserCookieService UserCookieService { get; internal set; }
 
@@ -40,25 +43,32 @@ namespace SIS.MvcFramework
         }
 
 
-        protected IHttpResponse View(string viewName, IDictionary<string, string> viewBag = null)
+        protected IHttpResponse View(string viewName)
         {
-            if (viewBag == null)
-            {
-                viewBag = new Dictionary<string, string>();
-            }
-
-            var allContent = this.GetViewContent(viewName, viewBag);
+            var allContent = this.GetViewContent(viewName, (object) null);
             this.PrepareHtmlResult(allContent);
             return this.Response;
         }
 
-        protected IHttpResponse ViewLoggedOut(string viewName, IDictionary<string, string> viewBag = null)
+        protected IHttpResponse View<T>(string viewName, T model = null)
+            where T : class
         {
-            if (viewBag == null)
-            {
-                viewBag = new Dictionary<string, string>();
-            }
-            var allContent = this.GetViewContentLoggedOut(viewName);
+            var allContent = this.GetViewContent(viewName, model);
+            this.PrepareHtmlResult(allContent);
+            return this.Response;
+        }
+
+        protected IHttpResponse ViewLoggedOut(string viewName)
+        {
+            var allContent = this.GetViewContentLoggedOut(viewName, (object) null);
+            this.PrepareHtmlResult(allContent);
+            return this.Response;
+        }
+
+        protected IHttpResponse ViewLoggedOut<T>(string viewName, T model = null)
+            where T : class
+        {
+            var allContent = this.GetViewContentLoggedOut(viewName, model);
             this.PrepareHtmlResult(allContent);
             return this.Response;
         }
@@ -106,26 +116,22 @@ namespace SIS.MvcFramework
             return this.Response;
         }
 
-        private string GetViewContent(string viewName,
-            IDictionary<string, string> viewBag)
+        private string GetViewContent<T>(string viewName, T model)
         {
-            var layoutContent = System.IO.File.ReadAllText("Views/_Layout.html");
-            var content = System.IO.File.ReadAllText("Views/" + viewName + ".html");
-            foreach (var item in viewBag)
-            {
-                content = content.Replace("@Model." + item.Key, item.Value);
-            }
-
-            var allContent = layoutContent.Replace("@RenderBody()", content);
-            return allContent;
+            var content = this.ViewEngine.GetHtml(viewName, System.IO.File.ReadAllText("Views/" + viewName + ".html"), model);
+            var layoutFileContent = System.IO.File.ReadAllText("Views/_Layout.html");
+            var allContent = layoutFileContent.Replace("@RenderBody()", content);
+            var layoutContent = this.ViewEngine.GetHtml("_Layout", allContent, model);
+            return layoutContent;
         }
 
-        private string GetViewContentLoggedOut(string viewName)
+        private string GetViewContentLoggedOut<T>(string viewName, T model)
         {
-            var layoutContent = System.IO.File.ReadAllText("Views/_Layout_LoggedOut.html");
-            var content = System.IO.File.ReadAllText("Views/" + viewName + ".html");
-            var allContent = layoutContent.Replace("@RenderBody()", content);
-            return allContent;
+            var content = this.ViewEngine.GetHtml(viewName, System.IO.File.ReadAllText("Views/" + viewName + ".html"), model);
+            var layoutFileContent = System.IO.File.ReadAllText("Views/_Layout_LoggedOut.html");
+            var allContent = layoutFileContent.Replace("@RenderBody()", content);
+            var layoutContent = this.ViewEngine.GetHtml("_Layout_LoggedOut", allContent, model);
+            return layoutContent;
         }
 
 

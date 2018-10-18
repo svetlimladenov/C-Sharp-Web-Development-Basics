@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CakesWebApp.ViewModels.Home;
 using SIS.Http.Enums;
 using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses.Contracts;
@@ -18,10 +19,7 @@ namespace CakesWebApp.Controllers
         [HttpGet("/hello")]
         public IHttpResponse HelloUser()
         {
-            return this.View("HelloUser", new Dictionary<string, string>
-            {
-                {"Username", this.User }
-            });
+            return this.View("HelloUser", new HelloUserViewModel { Username = this.User });
         }
     }
 }

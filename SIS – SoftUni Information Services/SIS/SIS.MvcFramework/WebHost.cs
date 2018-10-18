@@ -70,6 +70,8 @@ namespace SIS.MvcFramework
 
             controllerInstance.Request = request;
             controllerInstance.UserCookieService = serviceCollection.CreateInstance<IUserCookieService>();
+            controllerInstance.ViewEngine = new ViewEngine.ViewEngine();
+
 
             var actionParameterObjects = GetActionParameterObjects(methodInfo, request, serviceCollection);
 
