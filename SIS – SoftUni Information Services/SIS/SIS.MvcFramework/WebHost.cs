@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using CakesWebApp.Services;
 using SIS.Http.Enums;
 using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses.Contracts;
@@ -69,8 +68,9 @@ namespace SIS.MvcFramework
             }
 
             controllerInstance.Request = request;
-            controllerInstance.UserCookieService = serviceCollection.CreateInstance<IUserCookieService>();
             controllerInstance.ViewEngine = new ViewEngine.ViewEngine();
+            controllerInstance.UserCookieService = serviceCollection.CreateInstance<IUserCookieService>();
+            
 
 
             var actionParameterObjects = GetActionParameterObjects(methodInfo, request, serviceCollection);

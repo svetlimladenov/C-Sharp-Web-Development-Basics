@@ -1,4 +1,4 @@
-﻿namespace CakesWebApp.Services
+﻿namespace SIS.MvcFramework.Services
 {
     public interface IUserCookieService
     {

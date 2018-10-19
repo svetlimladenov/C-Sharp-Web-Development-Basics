@@ -3,5 +3,9 @@
 <a href="/Albums/Create" class="btn btn-success">Create Album</a>
 <hr style="height: 2px;" class="bg-success" />
 <div>
-    @Model.Albums
+    @foreach(var album in Model.Albums)
+    {
+        <h5><a href="/Albums/Details?id=@album.Id">@album.Name</a></h5>
+    }
+    
 </div>

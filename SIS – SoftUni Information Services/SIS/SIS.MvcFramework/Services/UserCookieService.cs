@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using SIS.MvcFramework.Logger;
 
-namespace CakesWebApp.Services
+namespace SIS.MvcFramework.Services
 {
     public class UserCookieService : IUserCookieService
     {

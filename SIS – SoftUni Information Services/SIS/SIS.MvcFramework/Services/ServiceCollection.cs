@@ -16,8 +16,9 @@ namespace SIS.MvcFramework.Services
         }
         public void AddService<TSource, TDestination>()
         {
-            dependencyContainer[typeof(TSource)] = typeof(TDestination);
+            this.dependencyContainer[typeof(TSource)] = typeof(TDestination);
         }
+
 
         public T CreateInstance<T>()
         {

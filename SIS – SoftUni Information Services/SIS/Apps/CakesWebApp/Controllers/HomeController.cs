@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CakesWebApp.Models;
 using CakesWebApp.ViewModels.Home;
 using SIS.Http.Enums;
 using SIS.Http.Requests.Contracts;
@@ -13,7 +14,9 @@ namespace CakesWebApp.Controllers
         [HttpGet("/")]
         public IHttpResponse Index()
         {
-            return this.View("Index");
+            var viewModel = new DisplayCakesViewModel();
+            viewModel.Cakes = this.Db.Products;
+            return this.View("Index", viewModel);
         }
 
         [HttpGet("/hello")]
@@ -21,5 +24,10 @@ namespace CakesWebApp.Controllers
         {
             return this.View("HelloUser", new HelloUserViewModel { Username = this.User });
         }
+    }
+
+    public class DisplayCakesViewModel
+    {
+        public IEnumerable<Product> Cakes { get; set; }
     }
 }

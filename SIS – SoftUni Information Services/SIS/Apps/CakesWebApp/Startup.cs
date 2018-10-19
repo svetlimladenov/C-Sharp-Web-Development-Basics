@@ -1,6 +1,5 @@
 ﻿using System;
 using CakesWebApp.Controllers;
-using CakesWebApp.Services;
 using SIS.Http.Enums;
 using SIS.MvcFramework;
 using SIS.MvcFramework.Logger;
@@ -20,6 +19,7 @@ namespace CakesWebApp
         {
             collection.AddService<IHashService, HashService>();
             collection.AddService<IUserCookieService, UserCookieService>();
+            collection.AddService<ILogger,FileLogger>();
             collection.AddService<ILogger>((() => new FileLogger($"log_{DateTime.Now:yyyy-dd-M}.txt")));
         }
     }

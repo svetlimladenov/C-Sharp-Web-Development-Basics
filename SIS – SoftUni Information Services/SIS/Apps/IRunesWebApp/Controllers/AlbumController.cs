@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using IRunesWebApp.GlobalConst;
 using IRunesWebApp.Models;
+using IRunesWebApp.ViewModels;
 using IRunesWebApp.ViewModels.Albums;
 using Microsoft.EntityFrameworkCore;
 using SIS.Http.Enums;
@@ -23,28 +24,26 @@ namespace IRunesWebApp.Controller
         {
             if (this.Request.Cookies.GetCookie(GlobalConstants.userCookieAuthentication) == null)
             {
-                return Redirect("/");                
+                return Redirect("/");
             }
 
-            var currentUser = this.User;                
+            var currentUser = this.User;
             var userId = this.Db.Users.FirstOrDefault(x => x.Username == currentUser)?.Id;
 
-            var query = from album in this.Db.Albums
-                        where album.AlbumUsers.Any(x => x.UserId == userId)
-                        select album;
+            var albums = from album in this.Db.Albums
+                         where album.AlbumUsers.Any(x => x.UserId == userId)
+                         select album;
 
-            var sb = new StringBuilder();
-            foreach (var album in query)
-            {
-                sb.AppendLine($"<h5><a href=\"/Albums/Details?id={album.Id}\">{album.Name}</a></h5></br>");
-            }
 
-            var viewBag = new Dictionary<string, string>
+
+            var viewModel = new AllAlbumsViewModel()
             {
-                {"Albums", sb.ToString()},
+                Albums = albums.ToArray(),
             };
-            return this.View("AllAlbums", viewBag);
+
+            return this.View("AllAlbums", viewModel);
         }
+
 
         [HttpGet("/Albums/Create")]
         public IHttpResponse CreateAlbum()
@@ -60,8 +59,6 @@ namespace IRunesWebApp.Controller
         [HttpPost("/Albums/Create")]
         public IHttpResponse AddNewAlbum(AddNewAlbumInputModel model)
         {
-
-
             var album = new Album()
             {
                 Name = model.AlbumName,
@@ -110,9 +107,8 @@ namespace IRunesWebApp.Controller
         }
 
         [HttpGet("/Albums/Details")]
-        public IHttpResponse AlbumDetails(AlbumsDetailsViewModel model)
+        public IHttpResponse AlbumDetails(AlbumDetailsViewModel model)
         {
-            //var id = this.Request.QueryData["id"].ToString();
             var id = model.Id;
             var album = this.Db.Albums.FirstOrDefault(x => x.Id == id);
             if (album == null)
@@ -120,33 +116,19 @@ namespace IRunesWebApp.Controller
                 return BadRequestError("Invalid Album.");
             }
             var albumId = album.Id;
-            var query = from track in this.Db.Tracks
-                        where track.TrackAlbums.Any(x => x.AlbumId == albumId)
-                        select track;
+            var tracks = from track in this.Db.Tracks
+                         where track.TrackAlbums.Any(x => x.AlbumId == albumId)
+                         select track;
 
-            var tracks = new StringBuilder();
-            var counter = 0;
-            decimal allTracksSum = 0.0m;
-            foreach (var track in query)
+            var viewModel = new AlbumDetailsViewModel()
             {
-                counter++;
-                allTracksSum += track.Price;
-                tracks.AppendLine($"<a href=\"/Albums/Tracks/Details?albumId={albumId}&trackId={track.Id}\">{counter}. {track.Name}</a></br>");
-            }
-
-            allTracksSum = Math.Round(allTracksSum - (allTracksSum * 0.13m),2);
-
-            var viewBag = new Dictionary<string, string>
-            {
-                {"AlbumCoverUrl", album.Cover},
-                {"AlbumName", album.Name},
-                {"AlbumId", album.Id},
-                {"AlbumPrice", allTracksSum.ToString(CultureInfo.InvariantCulture)},
-                {"Tracks", tracks.ToString()}
+                Album = album,
+                AlbumPrice = Math.Round(tracks.ToArray().Sum(x => x.Price) * 0.87m,2),
+                Id = albumId,
+                Tracks = tracks.ToArray(),
             };
 
-
-            return this.View("AlbumInfo", viewBag);
+            return this.View("AlbumInfo", viewModel);
         }
     }
 }

@@ -6,6 +6,7 @@ using SIS.Http.Responses;
 using SIS.Http.Responses.Contracts;
 using SIS.WebServer.Results;
 using IRunesWebApp.GlobalConst;
+using IRunesWebApp.ViewModels.Account;
 using SIS.MvcFramework;
 
 namespace IRunesWebApp.Controller
@@ -19,12 +20,13 @@ namespace IRunesWebApp.Controller
             {
                 return this.ViewLoggedOut("Index");
             }
+
             var username = this.User;
-            var viewBag = new Dictionary<string, string>
+            var viewModel = new IndexViewModel()
             {
-                    {"Username", username}
+                Username = username
             };
-            return this.View("IndexLogged", viewBag);
+            return this.View("IndexLogged", viewModel);
         }
     }
 }

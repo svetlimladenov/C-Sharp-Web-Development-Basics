@@ -7,7 +7,6 @@ using SIS.Http.Responses;
 using SIS.WebServer.Results;
 using System.Linq;
 using CakesWebApp.Models;
-using CakesWebApp.Services;
 using CakesWebApp.ViewModels.Account;
 using SIS.Http.Cookies;
 using SIS.Http.Requests.Contracts;

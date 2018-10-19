@@ -22,12 +22,12 @@ namespace IRunesWebApp.Controller
             //var albumId = this.Request.QueryData["albumId"].ToString();
             var albumId = model.AlbumId;
 
-            var viewBag = new Dictionary<string, string>
+            var viewModel = new CreateTrackViewModel()
             {
-                {"AlbumId", albumId},
+                AlbumId = albumId,
             };
 
-            return this.View("CreateTrack", viewBag);
+            return this.View("CreateTrack", viewModel);
         }
 
         [HttpPost("/Albums/Tracks/Create")]
@@ -102,15 +102,15 @@ namespace IRunesWebApp.Controller
                 var trackName = track.Name;
                 var price = track.Price;
 
-                var viewBag = new Dictionary<string, string>
+                var viewModel = new TrackInfoViewModel()
                 {
-                    {"TrackUrl", youtubeLink},
-                    {"TrackUrlName", trackName},
-                    {"Name", trackName },
-                    {"Price", price.ToString(CultureInfo.InvariantCulture)},
-                    {"AlbumId", albumId}
+                    AlbumId = albumId,
+                    TrackUrl = youtubeLink,
+                    TrackName = trackName,
+                    TrackPrice = price,
                 };
-                return this.View("TrackInfo", viewBag);
+
+                return this.View("TrackInfo", viewModel);
             }
 
             return BadRequestError("Track or Album unavaivable");

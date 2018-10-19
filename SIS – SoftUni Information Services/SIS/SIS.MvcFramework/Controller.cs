@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using CakesWebApp.Services;
 using SIS.Http.Enums;
 using SIS.Http.Headers;
 using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses;
 using SIS.Http.Responses.Contracts;
+using SIS.MvcFramework.Services;
 using SIS.MvcFramework.ViewEngine;
 
 namespace SIS.MvcFramework
@@ -98,9 +98,11 @@ namespace SIS.MvcFramework
 
         protected IHttpResponse BadRequestError(string errorMessage)
         {
-            var viewBag = new Dictionary<string, string>();
-            viewBag.Add("Error", errorMessage);
-            var allContent = this.GetViewContent("Error", viewBag);
+            var viewModel = new BadRequestViewModel()
+            {
+                ErrorMessage = errorMessage,
+            };
+            var allContent = this.GetViewContent("Error", viewModel);
             this.PrepareHtmlResult(allContent);
             this.Response.StatusCode = HttpResponseStatusCode.BadRequest;
             return this.Response;
@@ -142,4 +144,8 @@ namespace SIS.MvcFramework
         }
     }
 
+    public class BadRequestViewModel
+    {
+        public string ErrorMessage { get; set; }
+    }
 }
