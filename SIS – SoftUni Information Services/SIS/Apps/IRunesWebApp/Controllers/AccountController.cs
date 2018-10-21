@@ -28,7 +28,7 @@ namespace IRunesWebApp.Controller
             {
                 return this.BadRequestError("You are already logged in.");
             }
-            return this.ViewLoggedOut("Login");
+            return this.View("Login", "_Layout_LoggedOut");
         }
 
         [HttpPost("/Users/Login")]
@@ -76,7 +76,7 @@ namespace IRunesWebApp.Controller
             {
                 return this.BadRequestError("You must log out, if you want to make a new registration.");
             }
-            return this.ViewLoggedOut("Register");
+            return this.View("Register", "_Layout_LoggedOut");
         }
 
         [HttpPost("/Users/Register")]

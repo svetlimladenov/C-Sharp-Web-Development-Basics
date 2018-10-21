@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SIS.Http\SIS.Http.csproj" />
     <ProjectReference Include="..\..\SIS.MvcFramework\SIS.MvcFramework.csproj" />
   </ItemGroup>
 

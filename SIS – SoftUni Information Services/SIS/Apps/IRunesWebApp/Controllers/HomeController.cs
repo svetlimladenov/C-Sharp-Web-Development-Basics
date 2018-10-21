@@ -18,7 +18,7 @@ namespace IRunesWebApp.Controller
         {
             if (this.Request.Cookies.GetCookie(GlobalConstants.userCookieAuthentication) == null)
             {
-                return this.ViewLoggedOut("Index");
+                return this.View("Index", "_Layout_LoggedOut");
             }
 
             var username = this.User;
