@@ -20,6 +20,9 @@
     <None Update="Views\OrderById.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Views\OrdersList.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Views\Search.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

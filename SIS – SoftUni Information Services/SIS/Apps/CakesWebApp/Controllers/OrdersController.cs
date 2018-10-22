@@ -73,7 +73,46 @@ namespace CakesWebApp.Controllers
             return this.View("OrderById", viewModel);
         }
 
-        //Add to Order
+        [HttpGet("/orders/list")]
+        public IHttpResponse List()
+        {
+            var orders = this.Db.Orders.Where(x => x.User.Username == this.User)
+                .Select(x => new OrderInListViewModel()
+                {
+                    Id = x.Id,
+                    CreatedOn = x.DateOfCreation,
+                    NumberOfProducts = x.Products.Count,
+                    SumOfProductPrices = x.Products.Sum(p => p.Product.Price),
+                }).ToArray();
+            return this.View("OrdersList", orders);
+        }
+
+        [HttpPost("/orders/finish")]
+        public IHttpResponse Finish(int orderId)
+        {
+            var userId = this.Db.Users.FirstOrDefault(x => x.Username == this.User)?.Id;
+            if (userId == null)
+            {
+                return this.BadRequestError("Please login first.");
+            }
+
+            // Validate that the current user has permissions to finish this order
+            if (!this.Db.Orders.Any(x => x.Id == orderId && x.User.Username == this.User))
+            {
+                return this.BadRequestError("Order not found.");
+            }
+
+            var newEmptyOrder = new Order
+            {
+                UserId = userId.Value,
+            };
+
+            this.Db.Orders.Add(newEmptyOrder);
+            this.Db.SaveChanges();
+
+            return this.Redirect("/orders/list");
+        }
+
         //Order by Id
         //List of orders
         //Finish order (shopping cart => order)

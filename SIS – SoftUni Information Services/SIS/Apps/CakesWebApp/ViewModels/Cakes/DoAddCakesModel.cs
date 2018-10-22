@@ -6,7 +6,7 @@
 
         public decimal Price { get; set; }
 
-        public string Picture { get; set; }
+        public string ImageUrl { get; set; }
 
     }
 }
