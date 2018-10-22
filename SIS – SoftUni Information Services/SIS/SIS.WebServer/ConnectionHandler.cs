@@ -74,7 +74,7 @@ namespace SIS.WebServer
                 var resourceFileContent = File.ReadAllBytes(fullPath);
                 return new InlineResourceResult(resourceFileContent, HttpResponseStatusCode.OK);
             }
-            return new HttpResponse(HttpResponseStatusCode.NotFound);
+            return new TextResult("404 Not Found",HttpResponseStatusCode.NotFound);
 
         }
 
@@ -138,12 +138,12 @@ namespace SIS.WebServer
 
                     var httpResponse = this.HandleRequest(httpRequest);
 
-                    if (httpResponse.StatusCode == HttpResponseStatusCode.NotFound)
-                    {
-                        await this.PrepareResponse(new TextResult("Invalid URL</br>404 Not Found",
-                            HttpResponseStatusCode.NotFound));
-                        return;
-                    }
+                    //if (httpResponse.StatusCode == HttpResponseStatusCode.NotFound)
+                    //{
+                    //    await this.PrepareResponse(new TextResult("Invalid URL</br>404 Not Found",
+                    //        HttpResponseStatusCode.NotFound));
+                    //    return;
+                    //}
 
                     this.SetResponseSession(httpResponse, sessionId);
 

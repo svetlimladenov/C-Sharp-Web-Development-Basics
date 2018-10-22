@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using CakesWebApp.Models;
@@ -55,7 +54,7 @@ namespace CakesWebApp.Controllers
             return this.Redirect("/");
         }
 
-        //cakes/view/?id=1
+        //cakes/view?id=1
         [HttpGet("/cakes/view")]
         public IHttpResponse ById()
         {
@@ -66,7 +65,7 @@ namespace CakesWebApp.Controllers
                 return this.BadRequestError("Cake not found.");
             }
 
-            var viewModel = new ByIdViewModel
+            var viewModel = new CakeViewModel
             {
                 Name = product.Name,
                 Price = product.Price,
@@ -74,5 +73,28 @@ namespace CakesWebApp.Controllers
             };
             return this.View("CakeById", viewModel);
         }
+
+        //cakes/search?searchText=cake
+        [HttpGet("/cakes/search")]
+        public IHttpResponse Search(string searchText)
+        {
+            var cakes = this.Db.Products.Where(x => x.Name.Contains(searchText))
+                .Select(x => new CakeViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ImageUrl = x.ImageUrl,
+                    Price = x.Price,
+                }).ToList();
+            var cakesViewModel = new SearchViewModel
+            {
+                Cakes = cakes,
+                SearchText = searchText,
+            };
+
+            return this.View("Search", cakesViewModel);
+        }
+
+
     }
 }

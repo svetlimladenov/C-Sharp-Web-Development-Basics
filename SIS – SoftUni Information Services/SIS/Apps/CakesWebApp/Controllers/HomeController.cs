@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CakesWebApp.Models;
 using CakesWebApp.ViewModels.Home;
 using SIS.Http.Enums;
@@ -15,7 +16,7 @@ namespace CakesWebApp.Controllers
         public IHttpResponse Index()
         {
             var viewModel = new DisplayCakesViewModel();
-            viewModel.Cakes = this.Db.Products;
+            viewModel.Cakes = this.Db.Products.Take(4);
             return this.View("Index", viewModel);
         }
 
