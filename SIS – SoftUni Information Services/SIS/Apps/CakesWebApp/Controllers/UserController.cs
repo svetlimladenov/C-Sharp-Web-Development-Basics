@@ -23,6 +23,11 @@ namespace CakesWebApp.Controllers
                 this.BadRequestError("Profile page not accessible for this user.");
             }
 
+
+            if (viewModel.OrdersCount > 0)
+            {
+                viewModel.OrdersCount--;
+            }
             //TODO Create view model
             return this.View("Profile", viewModel);
         }

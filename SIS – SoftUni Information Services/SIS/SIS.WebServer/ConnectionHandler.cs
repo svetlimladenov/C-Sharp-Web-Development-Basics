@@ -66,16 +66,15 @@ namespace SIS.WebServer
 
         private IHttpResponse ReturnIfResource(string path)
         {
-            path = "/netcoreapp2.1/Resources" + path;
-            var fixedPath = WebUtility.UrlDecode(path);
-            string fullPath = Path.GetFullPath(".." + path);
+            var resourcesPath = "/netcoreapp2.1/Resources" + path;
+            var fixedPath = WebUtility.UrlDecode(resourcesPath);
+            string fullPath = Path.GetFullPath(".." + fixedPath);
             if (File.Exists(fullPath))
             {
                 var resourceFileContent = File.ReadAllBytes(fullPath);
                 return new InlineResourceResult(resourceFileContent, HttpResponseStatusCode.OK);
             }
-            return new TextResult("404 Not Found",HttpResponseStatusCode.NotFound);
-
+            return new TextResult($"Route with path \"{path}\" not found.", HttpResponseStatusCode.NotFound);
         }
 
         private IHttpResponse HandleRequest(IHttpRequest httpRequest)

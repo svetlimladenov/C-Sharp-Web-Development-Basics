@@ -2,10 +2,11 @@
 @foreach (var cake in Model.Cakes)
 {
 <div>
-    <a href="/cakes/view?id=@cake.Id">@cake.Name</a> $@cake.Price
+    <!--?id=cake.Id-->
+    <a href="/cakes/view">@cake.Name</a> $@cake.Price
     <form action="/orders/add" method="post">
         <input name="productId" type="hidden" value="@cake.Id" />
-        <input type="submit" class="btn-primary" value="Order"/>
+        <input type="submit" class="btn-primary" value="Order" />
     </form>
 </div>
 }
