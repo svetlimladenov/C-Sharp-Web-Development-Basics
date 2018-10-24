@@ -28,12 +28,14 @@ namespace SIS.MvcFramework
         {
             get
             {
-                if (!this.Request.Cookies.ContainsCookie(".auth-cakes"))
+                //.auth-cakes
+                //.auth-MishMash
+                if (!this.Request.Cookies.ContainsCookie(".auth-MishMash"))
                 {
                     return null;
                 }
 
-                var cookie = this.Request.Cookies.GetCookie(".auth-cakes");
+                var cookie = this.Request.Cookies.GetCookie(".auth-MishMash");
                 var cookieContent = cookie.Value;
                 var userName = this.UserCookieService.GetUserData(cookieContent);
                 return userName;
