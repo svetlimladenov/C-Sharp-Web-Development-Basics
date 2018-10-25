@@ -25,7 +25,7 @@ namespace MishMashWebApp.Controllers
         {
             if (this.User != null)
             {
-                return this.BadRequestError("First you need to log out.");
+                return this.BadRequestError("First you need to log out.", "_Admin_Layout");
             }
             return this.View("Users/Login");
         }

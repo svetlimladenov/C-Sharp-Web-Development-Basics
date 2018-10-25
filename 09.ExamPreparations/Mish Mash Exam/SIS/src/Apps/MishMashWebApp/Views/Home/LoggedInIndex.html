@@ -1,1 +1,68 @@
-﻿<h1>Hello, @User</h1>
+﻿<div class="container-fluid">
+    <div class="text-white p-2 text-center">
+        @if(Model.UserRole == "Admin")
+        {
+        <h3 class="text-mishmash">Hello, Admin - @User</h3>
+        }
+        @else
+        {
+        <h3 class="text-mishmash">Hello, @User</h3>
+        }
+    </div>
+</div>
+<div class="container-fluid">
+    <h3 class="text-mishmash">Your channels</h3>
+    <hr class="bg-mishmash hr-2" />
+    <div class="row text-center">
+        @foreach(var channel in Model.FollowedChannels)
+        {
+        <div class="col-half-offset bg-mishmash text-white my-3 py-2">
+            @channel.Name
+            <hr class="bg-white w-50 hr-2" />
+            @channel.Type.ToString() Channel
+            <hr class="bg-white w-50 hr-2" />
+            @channel.Followers.Count() Following
+            <hr class="bg-white w-50 hr-2" />
+            Following
+        </div>
+        }
+    </div>
+</div>
+<div class="container-fluid">
+    <h3 class="text-mishmash">Suggested</h3>
+    <hr class="bg-mishmash hr-2" />
+    <div class="row text-center">
+        @foreach(var channel in Model.SuggestedChannels)
+        {
+        <div class="col-half-offset bg-mishmash text-white my-3 py-2">
+            @channel.Name
+            <hr class="bg-white w-50 hr-2"/>
+            @channel.Type.ToString() Channel
+            <hr class="bg-white w-50 hr-2"/>
+            @channel.Followers.Count() Following
+            <hr class="bg-white w-50 hr-2"/>
+            <a href="/Channels/Follow?id=@channel.Id" class="text-white">Follow</a> &nbsp;
+            <a href="/Channels/Details?id=@channel.Id" class="text-white">Details</a>
+        </div>
+        }
+    </div>
+</div>
+<div class="container-fluid mb-2">
+    <h3 class="text-mishmash">See Other</h3>
+    <hr class="bg-mishmash hr-2" />
+    <div class="row text-center">
+        @foreach(var channel in Model.OtherChannels)
+        {
+        <div class="col-half-offset bg-mishmash text-white mt-3 mb-5 py-2">
+            @channel.Name
+            <hr class="bg-white w-50 hr-2" />
+            @channel.Type.ToString() Channel
+            <hr class="bg-white w-50 hr-2" />
+            @channel.Followers.Count() Following
+            <hr class="bg-white w-50 hr-2" />
+            <a href="/Channels/Follow?id=@channel.Id" class="text-white">Follow</a> &nbsp;
+            <a href="/Channels/Details?id=@channel.Id" class="text-white">Details</a>
+        </div>
+        }
+    </div>
+</div>

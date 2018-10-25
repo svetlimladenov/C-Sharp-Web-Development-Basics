@@ -21,5 +21,19 @@ namespace MishMashWebApp.Data
         {
             optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=MishMash;Integrated Security=True;");
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ChannelTag>()
+                .HasKey(x => new {x.ChannelId, x.TagId});
+
+            modelBuilder.Entity<Channel>()
+                .HasMany(x => x.ChannelTags)
+                .WithOne(x => x.Channel);
+
+            modelBuilder.Entity<Tag>()
+                .HasMany(x => x.TagChannels)
+                .WithOne(x => x.Tag);
+        }
     }
 }

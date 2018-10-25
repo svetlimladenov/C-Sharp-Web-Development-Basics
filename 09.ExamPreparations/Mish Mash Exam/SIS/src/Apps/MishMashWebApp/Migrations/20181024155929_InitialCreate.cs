@@ -55,14 +55,13 @@ namespace MishMashWebApp.Migrations
                 name: "ChannelTag",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<int>(nullable: false),
                     ChannelId = table.Column<int>(nullable: false),
                     TagId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChannelTag", x => x.Id);
+                    table.PrimaryKey("PK_ChannelTag", x => new { x.ChannelId, x.TagId });
                     table.ForeignKey(
                         name: "FK_ChannelTag_Channels_ChannelId",
                         column: x => x.ChannelId,
@@ -102,11 +101,6 @@ namespace MishMashWebApp.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ChannelTag_ChannelId",
-                table: "ChannelTag",
-                column: "ChannelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChannelTag_TagId",

@@ -79,10 +79,10 @@ namespace SIS.MvcFramework
             return this.Response;
         }
 
-        protected IHttpResponse BadRequestError(string errorMessage)
+        protected IHttpResponse BadRequestError(string errorMessage, string layoutName = "_Layout")
         {
             var viewModel = new ErrorViewModel {Error = errorMessage};
-            var allContent = this.GetViewContent("Error", viewModel);
+            var allContent = this.GetViewContent("Error", viewModel, layoutName);
             this.PrepareHtmlResult(allContent);
             this.Response.StatusCode = HttpResponseStatusCode.BadRequest;
             return this.Response;
@@ -107,6 +107,7 @@ namespace SIS.MvcFramework
             var layoutContent = this.ViewEngine.GetHtml("_Layout", allContent, model, this.User);
             return layoutContent;
         }
+
 
         private void PrepareHtmlResult(string content)
         {

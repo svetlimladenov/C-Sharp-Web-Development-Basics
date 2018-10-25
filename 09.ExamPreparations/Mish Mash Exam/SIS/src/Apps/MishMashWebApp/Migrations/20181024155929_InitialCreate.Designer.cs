@@ -9,7 +9,7 @@ using MishMashWebApp.Data;
 namespace MishMashWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181023215000_InitialCreate")]
+    [Migration("20181024155929_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,17 +39,13 @@ namespace MishMashWebApp.Migrations
 
             modelBuilder.Entity("MishMashWebApp.Models.ChannelTag", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<int>("ChannelId");
 
                     b.Property<int>("TagId");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Id");
 
-                    b.HasIndex("ChannelId");
+                    b.HasKey("ChannelId", "TagId");
 
                     b.HasIndex("TagId");
 
@@ -110,12 +106,12 @@ namespace MishMashWebApp.Migrations
             modelBuilder.Entity("MishMashWebApp.Models.ChannelTag", b =>
                 {
                     b.HasOne("MishMashWebApp.Models.Channel", "Channel")
-                        .WithMany("Tags")
+                        .WithMany("ChannelTags")
                         .HasForeignKey("ChannelId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MishMashWebApp.Models.Tag", "Tag")
-                        .WithMany("Channels")
+                        .WithMany("TagChannels")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
