@@ -1,0 +1,17 @@
+﻿<div class="row justify-content-center">
+    <div class="container text-center">
+        <h1 class="display-1 text-center">Delete : @Model.ContestName</h1>
+        <br />
+        <form method="post" action="/Contests/Delete">
+            <br />
+            <div class="form-group">
+                <label for="exampleFormControlInput1">ContestName</label>
+                <input type="text" name="name" value="@Model.ContestName" class="form-control" id="exampleFormControlInput1">
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-outline-danger col-md-5" value="Delete">
+                <a href="javascript:window.history.back()" class="btn btn-outline-secondary col-md-5">Back</a>
+            </div>
+        </form>
+    </div>
+</div>

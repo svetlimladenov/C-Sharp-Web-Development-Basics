@@ -1,0 +1,31 @@
+﻿<main>  
+    @if(User.Role == "Admin")
+    {
+    <h3 class="text-center text-torshia">Welcome Admin, @User.Username !</h3>
+    <h3 class="text-center text-torshia">Enjoy your work!</h3>
+    }
+    @else
+    {
+    <h3 class="text-center text-torshia">Welcome , @User.Username!</h3>
+    <h3 class="text-center text-torshia">Have a nice tasking experience!</h3>
+    }
+    <hr class="hr-2 bg-torshia w-100" />
+    
+    <div class="container-fluid">
+        <div class="row text-center">
+             @foreach(var task in Model.Tasks)
+             {
+                <div class="col-half-offset task bg-torshia rounded text-white my-3 py-2">
+                    <h6 class="task-title text-white text-center my-3">@task.Title</h6>
+                    <hr class="bg-white hr-2 w-75">
+                    <h6 class="task-title text-white text-center my-4">Level: @task.Level</h6>
+                    <hr class="bg-white hr-2 w-75">
+                    <div class="follow-button-holder d-flex justify-content-between w-50 mx-auto mt-4">
+                        <a href="/Reports/Report?id=@task.Id&username=@User.Username"><h6 class="text-center text-white">Report</h6></a>
+                        <a href="/Tasks/Details?id=@task.Id"><h6 class="text-center text-white">Details</h6></a>
+                    </div>
+                </div>
+             }
+        </div>
+    </div>
+</main>

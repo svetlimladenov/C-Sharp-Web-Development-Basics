@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using MishMashWebApp.Data;
-using SIS.MvcFramework;
-
-namespace MishMashWebApp
+﻿namespace CakesWebApp
 {
+    using SIS.MvcFramework;
+
     public class Program
     {
         public static void Main(string[] args)

@@ -23,7 +23,7 @@ namespace MishMashWebApp.Controllers
             var user = this.Db.Users.FirstOrDefault(x => x.Username == this.User);
             var allChannels = this.Db.Channels.ToArray();
 
-            var followedChannels = this.Db.UserInChannel.Where(x => x.UserId == user.Id).Select(x => x.Channel).ToList();
+            var followedChannels = this.Db.UserInChannel.Where(x => x.UserId == user.Id).Select(x => x.Channel).Include(c => c.Followers).ToList();
             var otherChannels = this.Db.Channels.Where(x => x.Followers.Select(ch => ch.UserId).FirstOrDefault() != user.Id).ToArray();
 
 
