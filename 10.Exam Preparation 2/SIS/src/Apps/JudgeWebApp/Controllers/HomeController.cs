@@ -8,6 +8,11 @@ namespace JudgeWebApp.Controllers
     {
         public IHttpResponse Index()
         {
+            if (!this.User.IsLoggedIn)
+            {
+               return this.View("Home/IndexLoggedOut"); 
+            }
+
             return this.View();
         }
     }

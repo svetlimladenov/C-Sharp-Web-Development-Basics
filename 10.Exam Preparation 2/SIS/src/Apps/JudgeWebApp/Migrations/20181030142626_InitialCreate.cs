@@ -48,8 +48,10 @@ namespace JudgeWebApp.Migrations
                 name: "Submissions",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Code = table.Column<string>(nullable: true),
+                    IsSuccessfull = table.Column<bool>(nullable: false),
                     ContestId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false)
                 },

@@ -1,0 +1,55 @@
+﻿<br />
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="list-group" id="myList" role="tablist">
+                {var firstActive = 1;}
+                @foreach(var contest in Model.ContestAndSubmission)
+                {
+                    @if(firstActive == 1)
+                    {
+                        <a class="list-group-item list-group-item-action list-group-item-dark active" data-toggle="list" href="#@contest.Name" role="tab">@contest.Name</a>
+                        {firstActive++;}
+                        { continue;}
+                    }
+                    <a class="list-group-item list-group-item-action list-group-item-dark" data-toggle="list" href="#@contest.Name" role="tab">@contest.Name</a>  
+                }
+            </div>
+            <hr />
+            <div class="col col-8 ml-auto mr-auto">
+                <a href="/Submissions/Create" class="btn col btn-outline-dark">Create</a>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="tab-content">
+                {var subActive = 1;}
+                @foreach(var contest in Model.ContestAndSubmission)
+                {
+                    @if(subActive == 1)
+                    {
+                        <div class="tab-pane fade show active" id="@contest.Name" role="tabpanel">                      
+                        {subActive++;}
+                    }
+                    @else
+                    {
+                        <div class="tab-pane fade show" id="@contest.Name" role="tabpanel">                      
+                    }
+                            <ul class="list-group">
+                                @foreach(var submission in contest.Submissions)
+                                {
+                                @if(submission.IsSuccessfull)
+                                {
+                                <li class="list-group-item list-group-item-success">Build Success <span class="float-right"><a href="/Accounts/Profile?id=@submission.UserId">@submission.Username</a></span></li>
+                                }
+                                @else
+                                {
+                                <li class="list-group-item list-group-item-danger">Build Failed <span class="float-right"><a href="/Accounts/Profile?id=@submission.UserId">@submission.Username</a></span></li>                               
+                                }
+                                }
+                            </ul>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

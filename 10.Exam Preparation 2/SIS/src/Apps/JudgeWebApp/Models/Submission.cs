@@ -2,9 +2,11 @@
 {
     public class Submission
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public string Code { get; set; }
+
+        public bool IsSuccessfull { get; set; } = false;
 
         public int ContestId { get; set; }
 

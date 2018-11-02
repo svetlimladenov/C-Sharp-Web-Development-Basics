@@ -39,7 +39,7 @@ namespace JudgeWebApp.Controllers
 
             var contest = new Contest()
             {
-                Name = name,
+                Name = name.Trim(),
                 UserId = user.Id,
             };
             user.Contests.Add(contest);
@@ -66,8 +66,23 @@ namespace JudgeWebApp.Controllers
         }
         [Authorize]
         [HttpPost]
-        public IHttpResponse Edit()
+        public IHttpResponse Edit(string name)
         {
+            var contest = this.Db.Contests.Include(c => c.User).FirstOrDefault(c => c.Name == name);
+
+            if (contest == null)
+            {
+                return BadRequestErrorWithView("Cant edit this contest.", new EditAndDeleteViewModel() { ContestName = name });
+            }
+
+            if (this.User.Role != "Admin")
+            {
+                if (contest.User.Username != this.User.Username)
+                {
+                    return BadRequestErrorWithView("Cant edit this contest.", new EditAndDeleteViewModel() { ContestName = name });
+                }
+            }
+
             return this.Redirect("/Contests/All");
         }
 

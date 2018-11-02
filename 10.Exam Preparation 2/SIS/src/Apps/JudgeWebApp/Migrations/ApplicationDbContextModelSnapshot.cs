@@ -39,12 +39,15 @@ namespace JudgeWebApp.Migrations
 
             modelBuilder.Entity("JudgeWebApp.Models.Submission", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code");
 
                     b.Property<int>("ContestId");
+
+                    b.Property<bool>("IsSuccessfull");
 
                     b.Property<int>("UserId");
 

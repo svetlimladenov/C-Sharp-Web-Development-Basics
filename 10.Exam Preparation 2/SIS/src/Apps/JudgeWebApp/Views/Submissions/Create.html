@@ -1,0 +1,32 @@
+﻿<div class="row justify-content-center">
+    <div class="container text-center">
+        <h1 class="display-1 text-center">Submit Submission</h1>
+        <br />
+        <form method="post" action="/Submissions/Create">
+            <br />
+            <div class="form-group">
+                <label for="exampleFormControlTextarea3">Code</label>
+                <textarea class="form-control" id="exampleFormControlTextarea3" rows="20" name="code"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Contest</label>
+                <select class="form-control" name="contest">
+                    @foreach(var contest in Model.Contests)
+                    {
+                         @if(Model.ContestNameSelected == contest.Name)
+                         {
+                             <option selected="selected">@contest.Name</option>   
+                         }
+                         @else
+                         {
+                             <option>@contest.Name</option>
+                         }               
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn col btn-outline-success" value="Submit">
+            </div>
+        </form>
+    </div>
+</div>

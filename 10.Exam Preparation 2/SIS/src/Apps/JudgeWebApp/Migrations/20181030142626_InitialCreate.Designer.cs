@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JudgeWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181030005245_InitialCreate")]
+    [Migration("20181030142626_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,12 +41,15 @@ namespace JudgeWebApp.Migrations
 
             modelBuilder.Entity("JudgeWebApp.Models.Submission", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code");
 
                     b.Property<int>("ContestId");
+
+                    b.Property<bool>("IsSuccessfull");
 
                     b.Property<int>("UserId");
 
