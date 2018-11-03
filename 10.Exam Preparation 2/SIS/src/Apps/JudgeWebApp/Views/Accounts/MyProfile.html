@@ -1,1 +1,24 @@
-﻿<h1>Your profile, @User.Username</h1>
+﻿<div class="row justify-content-start">
+    <div class="container text-center">
+        <h1 class="display-4 text-center">@User.Username 's profile</h1>
+        <img src="@Model.ProfilePicture" class="image--cover">
+        <p class="lead">Email : @Model.Email</p>
+        <p class="lead">Age : @Model.Age</p>
+        <hr/>
+    </div>
+    <div class="container">
+        <ul class="list-group">
+            @foreach(var submission in Model.Submissions)
+            {
+            @if(submission.IsSuccessfull)
+            {
+            <li class="list-group-item list-group-item-success"><a href="/Submissions/Details?id=@submission.Id">Build Success</a><span class="float-right">@submission.Contest.Name</span></li>
+            }
+            @else
+            {
+            <li class="list-group-item list-group-item-danger"><a href="/Submissions/Details?id=@submission.Id">Build Failed</a><span class="float-right">@submission.Contest.Name</span></li>
+            }
+            }
+        </ul>
+    </div>
+</div>

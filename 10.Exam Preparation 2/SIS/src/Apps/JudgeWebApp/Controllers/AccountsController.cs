@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.EntityFrameworkCore.Internal;
+﻿using System.Linq;
+using JudgeWebApp.ViewModels;
+using JudgeWebApp.ViewModels.Account;
+using Microsoft.EntityFrameworkCore;
 using SIS.HTTP.Responses;
 
 namespace JudgeWebApp.Controllers
@@ -27,7 +26,18 @@ namespace JudgeWebApp.Controllers
 
         public IHttpResponse MyProfile()
         {
-            return this.View("Accounts/MyProfile");
+            var user = this.Db.Users.Include(u => u.Submissions).ThenInclude(s => s.Contest).FirstOrDefault(u => u.Username == this.User.Username);
+            var submissions = user.Submissions.ToArray();
+            var firstS = submissions[0].Contest;
+            var viewModel = new MyProfileViewModel()
+            {
+                Username = user.Username,
+                Email = user.Email.Replace("@", "&#64;"),
+                Age = user.Age,
+                ProfilePicture = user.ProfilePictureUrl,
+                Submissions = submissions
+            };
+            return this.View("Accounts/MyProfile", viewModel);
         }
     }
 }

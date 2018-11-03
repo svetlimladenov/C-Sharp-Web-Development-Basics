@@ -4,6 +4,7 @@ using System.Net;
 using JudgeWebApp.Models;
 using JudgeWebApp.ViewModels.Contests;
 using JudgeWebApp.ViewModels.Submissions;
+using Microsoft.EntityFrameworkCore;
 using SIS.HTTP.Responses;
 using SIS.MvcFramework;
 
@@ -11,6 +12,22 @@ namespace JudgeWebApp.Controllers
 {
     public class SubmissionsController : BaseController
     {
+        [Authorize]
+        public IHttpResponse Details(int id)
+        {
+            var viewModel = this.Db.Submissions.Include(s => s.Contest).Include(s => s.User).Select(s => new SubmissionDetailsViewModel()
+            {
+                ContestName = s.Contest.Name,
+                SubmissionId = s.Id,
+                Username = s.User.Username,
+                UserId = s.UserId,
+                IsSuccessfull = s.IsSuccessfull,
+                Code = s.Code            
+            }).FirstOrDefault(s => s.SubmissionId == id);
+
+            return this.View(viewModel);
+        }
+
         [Authorize]
         public IHttpResponse All()
         {

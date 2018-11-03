@@ -3,7 +3,6 @@ using JudgeWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JudgeWebApp.Migrations
 {
@@ -66,9 +65,13 @@ namespace JudgeWebApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Age");
+
                     b.Property<string>("Email");
 
                     b.Property<string>("Password");
+
+                    b.Property<string>("ProfilePictureUrl");
 
                     b.Property<int>("Role");
 

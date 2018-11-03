@@ -39,11 +39,37 @@
                                 {
                                 @if(submission.IsSuccessfull)
                                 {
-                                <li class="list-group-item list-group-item-success">Build Success <span class="float-right"><a href="/Accounts/Profile?id=@submission.UserId">@submission.Username</a></span></li>
+                                <li class="list-group-item list-group-item-success"><a href="/Submissions/Details?id=@submission.Id">Build Success</a>
+                                    <span class="float-right">
+                                        <a href="/Accounts/Profile?id=@submission.UserId">
+                                            @if(User.Username == submission.Username)
+                                            {
+                                            Your Own Submission
+                                            }
+                                            @else
+                                            {
+                                            @submission.Username
+                                            }
+                                        </a>
+                                    </span>
+                                </li>
                                 }
                                 @else
                                 {
-                                <li class="list-group-item list-group-item-danger">Build Failed <span class="float-right"><a href="/Accounts/Profile?id=@submission.UserId">@submission.Username</a></span></li>                               
+                                <li class="list-group-item list-group-item-danger"><a href="/Submissions/Details?id=@submission.Id">Build Failed</a>
+                                    <span class="float-right">
+                                        <a href="/Accounts/Profile?id=@submission.UserId">
+                                            @if(User.Username == submission.Username)
+                                            {
+                                            Your Own Submission
+                                            }
+                                            @else
+                                            {
+                                            @submission.Username 
+                                            }
+                                        </a>
+                                    </span>
+                                    </li>                               
                                 }
                                 }
                             </ul>

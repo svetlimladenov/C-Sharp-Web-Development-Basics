@@ -152,7 +152,7 @@ namespace SIS.HTTP.Requests
             foreach (var queryParameter in queryParameters)
             {
                 string[] parameterArguments = queryParameter
-                    .Split('=', StringSplitOptions.RemoveEmptyEntries);
+                    .Split('=');
 
                 this.QueryData.Add(parameterArguments[0], parameterArguments[1]);
             }

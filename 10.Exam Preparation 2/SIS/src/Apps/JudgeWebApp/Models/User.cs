@@ -17,6 +17,10 @@ namespace JudgeWebApp.Models
 
         public string Password { get; set; }
 
+        public string ProfilePictureUrl { get; set; }
+
+        public int Age { get; set; }
+
         public Role Role { get; set; }
 
         public ICollection<Contest> Contests { get; set; }

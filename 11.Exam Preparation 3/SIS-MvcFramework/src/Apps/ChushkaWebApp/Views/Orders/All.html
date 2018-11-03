@@ -1,0 +1,28 @@
+﻿<h1 class="text-center">All Orders</h1>
+<hr class="bg-mishmash chushka-bg-color w-50 hr-2" />
+<div class="mx-auto w-75">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td scope="col">#</td>
+                <td scope="col">Order ID</td>
+                <td scope="col">Customer</td>
+                <td scope="col">Product</td>
+                <td scope="col">Ordered On</td>
+            </tr>
+        </thead>
+        <tbody>
+            {var counter = 0;}
+            @foreach(var order in Model.Orders)
+            { counter++;
+                 <tr scope="row">
+                     <td>@counter</td>
+                     <td>@order.Id</td>
+                     <td>@order.Customer</td>
+                     <td>@order.Product</td>
+                     <td>@order.OrderedOn</td>
+                 </tr>
+            }
+        </tbody>
+    </table>
+</div>
