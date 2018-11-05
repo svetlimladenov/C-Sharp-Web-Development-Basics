@@ -1,0 +1,29 @@
+﻿<main class="mt-3 mb-5">
+    <h1 class="text-center text-panda">My Receipts</h1>
+    <hr class="hr-2 bg-panda" />
+    <table class="table table-bordered text-panda table-striped">
+        <thead>
+            <tr>
+                <div class="row">
+                    <th scope="col" class="text-center text-panda">Id</th>
+                    <th scope="col" class="text-center text-panda">Fee</th>
+                    <th scope="col" class="text-center text-panda">Issued On</th>
+                    <th scope="col" class="text-center text-panda">Recipient</th>
+                    <th scope="col" class="text-center text-panda">Actions</th>
+                </div>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var receipt in Model.Receipts)
+            {
+            <tr>
+                <td class="text-center text-panda">@receipt.Id</td>
+                <td class="text-center text-panda">@receipt.Fee</td>
+                <td class="text-center text-panda">@receipt.IssuedOn</td>
+                <td class="text-center text-panda">@receipt.Recipient</td>
+                <td class="text-center text-panda"><a href="/Receipts/Details?id=@receipt.Id" class="btn bg-panda text-white">Details</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</main>

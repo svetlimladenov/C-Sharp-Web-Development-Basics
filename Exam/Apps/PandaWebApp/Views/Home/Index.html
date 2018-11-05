@@ -1,0 +1,90 @@
+﻿<main class="mt-3">
+    @if(User.Role == "Admin")
+    {
+    <h1 class="text-center">Hello, Administrator @User.Username</h1>
+    }
+    @else
+    {
+    <h1 class="text-center">Hello, @User.Username</h1>
+    }
+    <hr class="hr-2 bg-panda">
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-around mb-3">
+            <div class="col-md-3">
+                <h3 class="text-center">Pending</h3>
+                <div class="border-panda">
+                    @if(Model.Pending.Count() == 0)
+                    {
+                    <div class="row mt-2 mb-2 justify-content-center">
+                        <p class="lead">No Pending Packages</p>
+                    </div>
+                    }
+                    @foreach(var package in Model.Pending)
+                    {
+                    <div class="row  mt-2 mb-2">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8">
+                            <h3 class="text-panda">@package.Description</h3>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="/Packages/Details?id=@package.Id" class="btn bg-panda text-white">Details</a>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-4">
+                <h3 class="text-center">Shipped</h3>
+                <div class="border-panda">
+                    @if(Model.Shipped.Count() == 0)
+                    {
+                    <div class="row mt-2 mb-2 justify-content-center">
+                        <p class="lead">No Shipped Packages</p>
+                    </div>
+                    }
+                    @foreach(var package in Model.Shipped)
+                    {
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8">
+                            <h3 class="text-panda">@package.Description</h3>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="/Packages/Details?id=@package.Id" class="btn bg-panda text-white">Details</a>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+                <h3 class="text-center">Delivered</h3>
+                <div class="border-panda">
+                    @if(Model.Delivered.Count() == 0)
+                    {
+                    <div class="row mt-2 mb-2 justify-content-center">
+                        <p class="lead">No Delivered Packages</p>
+                    </div>
+                    }
+                    @foreach(var package in Model.Delivered)
+                    {
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8">
+                            <h3 class="text-panda">@package.Description</h3>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="/Packages/Acquire?id=@package.Id" class="btn bg-panda text-white">Acquire</a>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                    }
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
