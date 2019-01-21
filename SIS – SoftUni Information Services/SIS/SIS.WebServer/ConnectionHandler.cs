@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Net;
-using System.Threading;
 
 namespace SIS.WebServer
 {
@@ -16,7 +15,6 @@ namespace SIS.WebServer
     using Http.Enums;
     using Http.Requests;
     using Http.Requests.Contracts;
-    using Http.Responses;
     using Http.Responses.Contracts;
     using Routing;
     public class ConnectionHandler

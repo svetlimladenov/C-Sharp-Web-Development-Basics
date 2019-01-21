@@ -1,15 +1,8 @@
 ﻿using System;
-using CakesWebApp.Data;
-using Microsoft.EntityFrameworkCore.Internal;
-using SIS.Http.Enums;
-using SIS.Http.Requests;
-using SIS.Http.Responses;
-using SIS.WebServer.Results;
 using System.Linq;
 using CakesWebApp.Models;
 using CakesWebApp.ViewModels.Account;
 using SIS.Http.Cookies;
-using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses.Contracts;
 using SIS.MvcFramework;
 using SIS.MvcFramework.Services;

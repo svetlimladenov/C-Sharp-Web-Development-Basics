@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using IRunesWebApp.Models;
+﻿using System.Collections.Generic;
 
 namespace IRunesWebApp.Models
 {

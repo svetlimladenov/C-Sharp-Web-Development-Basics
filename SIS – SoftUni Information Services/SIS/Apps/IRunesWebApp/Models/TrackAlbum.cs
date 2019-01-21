@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IRunesWebApp.Models
+﻿namespace IRunesWebApp.Models
 {
     public class TrackAlbum
     {

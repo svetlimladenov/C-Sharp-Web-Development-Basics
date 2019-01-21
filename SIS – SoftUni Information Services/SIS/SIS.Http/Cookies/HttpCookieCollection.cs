@@ -2,7 +2,6 @@
 
 namespace SIS.Http.Cookies
 {
-    using System;
     using System.Linq;
     using SIS.Http.Common;
     using System.Collections.Generic;

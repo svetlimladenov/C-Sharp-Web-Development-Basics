@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace IRunesWebApp.GlobalConst
+﻿namespace IRunesWebApp.GlobalConst
 {
     public static class GlobalConstants
     {

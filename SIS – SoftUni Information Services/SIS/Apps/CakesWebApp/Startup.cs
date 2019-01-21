@@ -1,10 +1,7 @@
 ﻿using System;
-using CakesWebApp.Controllers;
-using SIS.Http.Enums;
 using SIS.MvcFramework;
 using SIS.MvcFramework.Logger;
 using SIS.MvcFramework.Services;
-using SIS.WebServer.Routing;
 
 namespace CakesWebApp
 {

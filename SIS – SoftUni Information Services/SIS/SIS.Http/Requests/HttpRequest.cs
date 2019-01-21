@@ -1,6 +1,4 @@
-﻿using System.Net.Security;
-using SIS.Http.Cookies;
-using SIS.Http.Sessions;
+﻿using SIS.Http.Cookies;
 using SIS.Http.Sessions.Contacts;
 
 namespace SIS.Http.Requests

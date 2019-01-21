@@ -4,10 +4,8 @@ using IRunesWebApp.GlobalConst;
 using IRunesWebApp.Models;
 using IRunesWebApp.ViewModels.Account;
 using SIS.Http.Cookies;
-using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses.Contracts;
 using SIS.MvcFramework;
-using SIS.WebServer.Results;
 using SIS.MvcFramework.Services;
 
 namespace IRunesWebApp.Controller

@@ -1,5 +1,4 @@
 ﻿using System;
-using SIS.Http.Enums;
 using SIS.MvcFramework;
 using SIS.MvcFramework.Logger;
 using SIS.MvcFramework.Services;

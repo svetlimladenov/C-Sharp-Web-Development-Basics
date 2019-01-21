@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using CakesWebApp.Models;
 using CakesWebApp.ViewModels.Cakes;
-using CakesWebApp.ViewModels.Home;
-using SIS.Http.Requests;
-using SIS.Http.Requests.Contracts;
-using SIS.Http.Responses;
 using SIS.Http.Responses.Contracts;
 using SIS.MvcFramework;
 using SIS.MvcFramework.Logger;
-using SIS.WebServer.Results;
 
 namespace CakesWebApp.Controllers
 {

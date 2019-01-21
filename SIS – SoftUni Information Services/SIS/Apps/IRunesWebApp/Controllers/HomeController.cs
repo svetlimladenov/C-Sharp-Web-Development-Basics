@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using SIS.Http.Enums;
-using SIS.Http.Requests.Contracts;
-using SIS.Http.Responses;
-using SIS.Http.Responses.Contracts;
-using SIS.WebServer.Results;
+﻿using SIS.Http.Responses.Contracts;
 using IRunesWebApp.GlobalConst;
 using IRunesWebApp.ViewModels.Account;
 using SIS.MvcFramework;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using SIS.Http.Enums;
 using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses.Contracts;

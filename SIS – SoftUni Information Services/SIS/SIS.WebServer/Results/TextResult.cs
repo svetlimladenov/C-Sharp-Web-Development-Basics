@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using SIS.Http.Enums;
 using SIS.Http.Headers;
 using SIS.Http.Responses;

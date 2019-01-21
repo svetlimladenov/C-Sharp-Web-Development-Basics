@@ -1,6 +1,4 @@
-﻿using IRunesWebApp.Models;
-
-namespace IRunesWebApp.ViewModels.Tracks
+﻿namespace IRunesWebApp.ViewModels.Tracks
 {
     public class TrackInfoViewModel
     {

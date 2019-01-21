@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Text;
 using IRunesWebApp.GlobalConst;
 using IRunesWebApp.Models;
-using IRunesWebApp.ViewModels;
 using IRunesWebApp.ViewModels.Albums;
-using Microsoft.EntityFrameworkCore;
-using SIS.Http.Enums;
-using SIS.Http.Requests.Contracts;
 using SIS.Http.Responses.Contracts;
 using SIS.MvcFramework;
-using SIS.WebServer.Results;
 
 namespace IRunesWebApp.Controller
 {

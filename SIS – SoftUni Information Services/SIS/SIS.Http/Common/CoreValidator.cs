@@ -1,5 +1,4 @@
 ﻿using System;
-using SIS.Http.Exceptions;
 
 namespace SIS.Http.Common
 {

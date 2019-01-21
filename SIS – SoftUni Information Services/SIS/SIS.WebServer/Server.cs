@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace SIS.WebServer
+﻿namespace SIS.WebServer
 {
     using System;
     using System.Net;

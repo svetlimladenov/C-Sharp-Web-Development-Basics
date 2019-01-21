@@ -1,9 +1,4 @@
-﻿using IRunesWebApp.Controller;
-using SIS.Http.Enums;
-using SIS.MvcFramework;
-using SIS.WebServer;
-using SIS.WebServer.Results;
-using SIS.WebServer.Routing;
+﻿using SIS.MvcFramework;
 
 namespace IRunesWebApp
 {

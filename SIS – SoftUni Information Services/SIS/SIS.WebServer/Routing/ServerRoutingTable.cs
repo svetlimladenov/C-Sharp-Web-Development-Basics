@@ -6,8 +6,6 @@ namespace SIS.WebServer.Routing
     using System;
     using System.Collections.Generic;
     using Http.Enums;
-    using Http.Requests;
-    using Http.Responses;
 
     public class ServerRoutingTable
     {
